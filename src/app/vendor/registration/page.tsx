@@ -8,6 +8,7 @@ import { ChevronDown, Search, Check, X } from "lucide-react";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import { Input } from "@/components/ui/input";
+import { NEXT_PUBLIC_ADMIN_APP_URL, NEXT_PUBLIC_SUPPORT_EMAIL } from "@/config/variables";
 import type { AppDispatch } from "@/store";
 import {
   resetOtpState,
@@ -29,8 +30,8 @@ interface CountryOption {
 
 const mainSiteUrl =  "/";
 const adminLoginUrl =
-  process.env.NEXT_PUBLIC_ADMIN_APP_URL ?? "http://localhost:5173/sign-in?redirect=%2F";
-const supportEmail = "support@sellerslogin.com";
+  NEXT_PUBLIC_ADMIN_APP_URL || "/sign-in?redirect=%2F";
+const supportEmail = NEXT_PUBLIC_SUPPORT_EMAIL || "";
 const vendorOverviewUrl = "/vendor";
 const newTabProps = {
   target: "_blank",

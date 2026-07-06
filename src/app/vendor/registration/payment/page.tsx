@@ -184,7 +184,7 @@ export default function PaymentPendingPage() {
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8081/api/v1"}/vendor/billing/apply-referral`,
+        `${process.env.NEXT_PUBLIC_API_URL || ""}/vendor/billing/apply-referral`,
         {
           method: "POST",
           headers: {
@@ -303,7 +303,7 @@ export default function PaymentPendingPage() {
       }
 
       const orderRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8081/api/v1"}/vendor/billing/create-order`,
+        `${process.env.NEXT_PUBLIC_API_URL || ""}/vendor/billing/create-order`,
         {
           method: "POST",
           headers: {
@@ -355,7 +355,7 @@ export default function PaymentPendingPage() {
           handler: async function (response: RazorpayPaymentResponse) {
             try {
               const verifyRes = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8081/api/v1"}/vendor/billing/verify`,
+                `${process.env.NEXT_PUBLIC_API_URL || ""}/vendor/billing/verify`,
                 {
                   method: "POST",
                   headers: {
@@ -471,7 +471,7 @@ export default function PaymentPendingPage() {
 
     try {
       const subRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8081/api/v1"}/vendor/billing/subscription/create`,
+        `${process.env.NEXT_PUBLIC_API_URL || ""}/vendor/billing/subscription/create`,
         {
           method: "POST",
           headers: {
@@ -517,7 +517,7 @@ export default function PaymentPendingPage() {
         handler: async function (response: RazorpaySubscriptionResponse) {
           try {
             const verifyRes = await fetch(
-              `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8081/api/v1"}/vendor/billing/subscription/verify`,
+              `${process.env.NEXT_PUBLIC_API_URL || ""}/vendor/billing/subscription/verify`,
               {
                 method: "POST",
                 headers: {

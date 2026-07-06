@@ -8,6 +8,7 @@ import {
   UserRoundPlus,
 } from "lucide-react";
 import VendorBannerVideo from "@/components/vendor/VendorBannerVideo";
+import { NEXT_PUBLIC_ADMIN_APP_URL, NEXT_PUBLIC_SUPPORT_EMAIL } from "@/config/variables";
 
 const sellerFeatureItems = [
   {
@@ -57,10 +58,10 @@ const sellerFlowItems = [
   },
 ] as const;
 
-const supportEmail = "support@sellerslogin.com";
+const supportEmail = NEXT_PUBLIC_SUPPORT_EMAIL || "";
 const adminLoginUrl =
-  process.env.NEXT_PUBLIC_ADMIN_APP_URL ??
-  "http://localhost:5173/sign-in?redirect=%2F";
+  NEXT_PUBLIC_ADMIN_APP_URL ||
+  "/sign-in?redirect=%2F";
 
 export default function VendorPage() {
   return (

@@ -7,6 +7,7 @@ import { GlobalBackground } from "@/components/landing/GlobalBackground";
 import { CustomCursor } from "@/components/landing/CustomCursor";
 import { ShieldCheck, ArrowRight, Loader2, CheckCircle2 } from "lucide-react";
 import { countryCodes } from "@/lib/countryCodes";
+import { NEXT_PUBLIC_API_URL } from "@/config/variables";
 
 const getFlagEmoji = (countryCode: string) => {
   const codePoints = countryCode
@@ -36,7 +37,7 @@ export default function ContactPage() {
     };
 
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.sellerslogin.com";
+      const baseUrl = NEXT_PUBLIC_API_URL || "";
       const response = await fetch(`${baseUrl}/v1/public/contact-us`, {
         method: "POST",
         headers: {

@@ -7,7 +7,7 @@ export const pricingFaqs = [
       <div className="space-y-3">
         <p>No, there is no separate dashboard fee.</p>
         <p>Many companies charge a monthly fee like ₹899 or ₹999 just for providing a dashboard, and then they also charge separately for messages.</p>
-        <p>But in SellersLogin.com, there is no extra charge for the dashboard.</p>
+        <p>But in SellersLogin, there is no extra charge for the dashboard.</p>
         <p>You only pay for the messages you send, nothing else. The dashboard is completely free to use.</p>
       </div>
     )

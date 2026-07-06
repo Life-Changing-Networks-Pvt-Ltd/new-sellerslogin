@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ShieldCheck, ShieldAlert, Truck, Info, Briefcase, LifeBuoy, FileText, Building2 } from "lucide-react";
 import { navPageGroups } from "@/data/navPages";
+import { NEXT_PUBLIC_API_URL } from "@/config/variables";
 
 const labelIcons: Record<string, React.ReactNode> = {
   "Privacy Policy": <ShieldCheck className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5} />,
@@ -122,7 +123,7 @@ export function FooterSection() {
     e.preventDefault();
     if (email) {
       try {
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8081/api";
+        const baseUrl = NEXT_PUBLIC_API_URL || "";
         await fetch(`${baseUrl}/v1/public/subscribe`, {
           method: "POST",
           headers: {

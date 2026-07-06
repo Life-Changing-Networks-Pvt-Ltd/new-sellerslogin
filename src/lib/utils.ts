@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { NEXT_PUBLIC_ADMIN_APP_URL } from "@/config/variables";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -20,8 +21,9 @@ export const encodeBase64 = (value: string) => {
 };
 
 export const resolveAdminLoginUrl = () => {
-  const fallback = process.env.NEXT_PUBLIC_ADMIN_APP_URL ? process.env.NEXT_PUBLIC_ADMIN_APP_URL + "/sign-in?redirect=%2F" : "http://localhost:5173/sign-in?redirect=%2F";
-  const raw = (process.env.NEXT_PUBLIC_ADMIN_APP_URL ?? fallback).trim();
+  const fallback = "/sign-in?redirect=%2F";
+  const configuredAdminUrl = String(NEXT_PUBLIC_ADMIN_APP_URL || "").trim();
+  const raw = (configuredAdminUrl || fallback).trim();
 
   try {
     return new URL(raw);
@@ -60,7 +62,7 @@ export const buildAdminAutoLoginUrl = ({
   token: string;
   vendor: Record<string, unknown> | null;
 }) => {
-  const adminLoginUrl = process.env.NEXT_PUBLIC_ADMIN_APP_URL ?? "http://localhost:5173/sign-in?redirect=%2F";
+  const adminLoginUrl = NEXT_PUBLIC_ADMIN_APP_URL || "/sign-in?redirect=%2F";
   const url = resolveAdminLoginUrl();
   if (!url) return adminLoginUrl;
 

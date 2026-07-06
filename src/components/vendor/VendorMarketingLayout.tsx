@@ -205,7 +205,7 @@ export default function VendorMarketingLayout({
                   Contact
                 </p>
                 <div className="mt-4 space-y-3 text-sm text-slate-600">
-                  <p>support@sellerslogin.com</p>
+                  <p>{process.env.NEXT_PUBLIC_SUPPORT_EMAIL || ""}</p>
                   <p>+91 98731 38444</p>
                   {/* <p>
                     Office No 834, Gaur City Mall, Greater Noida,

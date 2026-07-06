@@ -48,7 +48,7 @@ export const faqs = [
   },
   {
     q: "Can I use my own domain name?",
-    a: "Yes, you can connect any custom domain you own. We also offer free subdomains (yourstore.sellerslogin.com) and can help you register a new domain directly through our platform.",
+    a: "Yes, you can connect any custom domain you own. We also offer free subdomains (yourstore.SellersLogin) and can help you register a new domain directly through our platform.",
   },
   {
     q: "What integrations are available?",

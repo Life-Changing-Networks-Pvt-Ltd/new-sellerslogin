@@ -1,4 +1,10 @@
 import { Mail, Phone, HelpCircle, MessagesSquare, Handshake } from "lucide-react";
+import {
+  NEXT_PUBLIC_ACCOUNTANTS_EMAIL,
+  NEXT_PUBLIC_PARTNERSHIP_EMAIL,
+  NEXT_PUBLIC_SALES_EMAIL,
+  NEXT_PUBLIC_SUPPORT_EMAIL,
+} from "@/config/variables";
 
 export function ContactCardsSection() {
   const cards = [
@@ -8,7 +14,7 @@ export function ContactCardsSection() {
       iconColor: "text-blue-500",
       iconBg: "bg-blue-100",
       details: [
-        { icon: Mail, text: "sales@sellerslogin.com" },
+        { icon: Mail, text: NEXT_PUBLIC_SALES_EMAIL || "" },
         { icon: Phone, text: "1800 103 1123, 1800 572 3535" },
       ],
     },
@@ -18,7 +24,7 @@ export function ContactCardsSection() {
       iconColor: "text-amber-500",
       iconBg: "bg-amber-100",
       details: [
-        { icon: Mail, text: "support@sellerslogin.com" },
+        { icon: Mail, text: NEXT_PUBLIC_SUPPORT_EMAIL || "" },
         { icon: Phone, text: "1800 309 3036" },
       ],
     },
@@ -28,8 +34,8 @@ export function ContactCardsSection() {
       iconColor: "text-emerald-500",
       iconBg: "bg-emerald-100",
       details: [
-        { icon: Mail, text: "partnership@sellerslogin.com" },
-        { icon: Mail, text: "accountants@sellerslogin.com" },
+        { icon: Mail, text: NEXT_PUBLIC_PARTNERSHIP_EMAIL || "" },
+        { icon: Mail, text: NEXT_PUBLIC_ACCOUNTANTS_EMAIL || "" },
       ],
     },
   ];

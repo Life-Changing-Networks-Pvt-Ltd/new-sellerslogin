@@ -29,8 +29,8 @@ interface CountryOption {
 
 const mainSiteUrl = "/";
 const adminLoginUrl =
-  process.env.NEXT_PUBLIC_ADMIN_APP_URL ?? "http://localhost:5173/sign-in?redirect=%2F";
-const supportEmail = "support@sellerslogin.com";
+  process.env.NEXT_PUBLIC_ADMIN_APP_URL || "/sign-in?redirect=%2F";
+const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "";
 const vendorOverviewUrl = "/vendor";
 const newTabProps = {
   target: "_blank",

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+import { NEXT_PUBLIC_API_URL } from "@/config/variables";
 
 const WEBSITE_ID = "sellerslogin";
 const WEBSITE_NAME = "Main Website - Sellers Login";
@@ -35,9 +36,9 @@ const getSessionId = () => {
 
 const getApiBaseUrl = () =>
   (
-    process.env.NEXT_PUBLIC_API_URL ||
+    NEXT_PUBLIC_API_URL ||
     process.env.NEXT_PUBLIC_PUBLIC_API_URL ||
-    "http://localhost:8081/api"
+    ""
   )
     .replace(/\/+$/, "")
     .replace(/\/v1$/, "");

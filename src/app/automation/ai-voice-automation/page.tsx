@@ -1500,7 +1500,7 @@ function CTA() {
             before your next meeting.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="https://web.sellerslogin.com/vendor/registration">
+            <Link href={process.env.NEXT_PUBLIC_VENDOR_REGISTRATION_URL || "/vendor/registration"}>
               <button className="group flex items-center gap-2 bg-white text-purple-600 hover:bg-purple-200 font-bold px-8 py-4 rounded-full transition-all duration-200 shadow-lg hover:-translate-y-0.5">
                 Get Started Free
                 <RiArrowRightLine className="transition-transform group-hover:translate-x-1" />

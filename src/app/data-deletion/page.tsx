@@ -1,6 +1,7 @@
 import { CustomCursor } from "@/components/landing/CustomCursor";
 import { FooterSection } from "@/components/landing/FooterSection";
 import { Navbar } from "@/components/landing/Navbar";
+import { NEXT_PUBLIC_SUPPORT_EMAIL } from "@/config/variables";
 import Link from "next/link";
 
 export default function DataDeletionPage() {
@@ -29,7 +30,7 @@ export default function DataDeletionPage() {
 
           <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">2. How to Submit a Request</h2>
           <p className="mb-4">
-            To request the deletion of your data, please contact us at <strong>support@sellerslogin.com</strong> with the subject line "Data Deletion Request". Please include your registered email address or account details so we can verify your identity before proceeding.
+            To request the deletion of your data, please contact us at <strong>{NEXT_PUBLIC_SUPPORT_EMAIL || "the configured support email"}</strong> with the subject line "Data Deletion Request". Please include your registered email address or account details so we can verify your identity before proceeding.
           </p>
 
           <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">3. What Happens Next</h2>

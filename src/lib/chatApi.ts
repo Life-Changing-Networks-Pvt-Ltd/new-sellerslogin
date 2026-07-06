@@ -1,7 +1,7 @@
 import axios from "axios";
 import { NEXT_PUBLIC_API_URL } from "@/config/variables";
 
-const BASE_URL = NEXT_PUBLIC_API_URL?.replace(/\/api\/v1\/?$/, "") || "http://localhost:8081";
+const BASE_URL = NEXT_PUBLIC_API_URL?.replace(/\/api\/v1\/?$/, "") || "";
 
 const chatApi = axios.create({
   baseURL: `${BASE_URL}/api/v1/chat`,

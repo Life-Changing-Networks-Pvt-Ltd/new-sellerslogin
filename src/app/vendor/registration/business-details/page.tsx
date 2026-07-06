@@ -20,6 +20,11 @@ import type { AppDispatch, RootState } from "@/store";
 import { updateVendorBusiness } from "@/store/slices/vendorSlice";
 import { uploadFileToCloudinary } from "@/lib/cloudinary-upload";
 import {
+  NEXT_PUBLIC_ADMIN_APP_URL,
+  NEXT_PUBLIC_COMPLETE_FEATURES_URL,
+  NEXT_PUBLIC_SUPPORT_EMAIL,
+} from "@/config/variables";
+import {
   ANNUAL_TURNOVER,
   BUSINESS_NATURES,
   BUSINESS_TYPES,
@@ -93,8 +98,9 @@ interface BusinessForm {
 
 const mainSiteUrl =  "/";
 const adminLoginUrl =
-  process.env.NEXT_PUBLIC_ADMIN_APP_URL ?? "http://localhost:5173/sign-in?redirect=%2F";
-const supportEmail = "support@sellerslogin.com";
+  NEXT_PUBLIC_ADMIN_APP_URL || "/sign-in?redirect=%2F";
+const supportEmail = NEXT_PUBLIC_SUPPORT_EMAIL || "";
+const completeFeaturesUrl = NEXT_PUBLIC_COMPLETE_FEATURES_URL || "/complete-features";
 const vendorOverviewUrl = "/vendor";
 const newTabProps = {
   target: "_blank",
@@ -2709,7 +2715,7 @@ export default function VendorBusinessDetailsPage() {
               />
               <div className="mt-4 text-center pb-4">
                 <p className="text-sm text-slate-600 font-medium">
-                  For more Feature details, Go To <a href="https://sellerslogin.com/complete-features" target="_blank" rel="noopener noreferrer" className="text-violet-700 hover:text-violet-800 underline underline-offset-4">sellerslogin.com/complete-features</a>
+                  For more Feature details, Go To <a href={completeFeaturesUrl} target="_blank" rel="noopener noreferrer" className="text-violet-700 hover:text-violet-800 underline underline-offset-4">Complete features</a>
                 </p>
               </div>
             </div>

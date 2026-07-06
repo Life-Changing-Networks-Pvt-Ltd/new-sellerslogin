@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { featureDropdown, solutionsDropdown, automationDropdown, industriesDropdown } from "@/data/landing";
 import { LandingIcon } from "@/components/icons/LandingIcon";
 import type { LandingIconName } from "@/components/icons/LandingIcon";
+import { NEXT_PUBLIC_ADMIN_APP_URL } from "@/config/variables";
 
 type DropdownItem = {
   href: string;
@@ -75,6 +76,7 @@ export function Navbar() {
 
   const pathname = usePathname();
   const scrolled = scrolledState || pathname !== '/';
+  const adminSignInUrl = NEXT_PUBLIC_ADMIN_APP_URL || "/sign-in";
 
   useEffect(() => {
     const handleScroll = () => setScrolledState(window.scrollY > 20);
@@ -184,7 +186,7 @@ export function Navbar() {
 
           <div className="hidden lg:flex items-center gap-3">
             <Link
-              href="https://admin.sellerslogin.com/sign-in"
+              href={adminSignInUrl}
               target="_blank" rel="noopener noreferrer"
               className={`text-sm font-medium py-2 px-5 rounded-full transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2 ${
                 scrolled
@@ -268,7 +270,7 @@ export function Navbar() {
 
           <div className="pt-4 pb-2 flex flex-col gap-3">
             <Link
-              href="https://admin.sellerslogin.com/sign-in"
+              href={adminSignInUrl}
               target="_blank" rel="noopener noreferrer"
               className="block text-center w-full bg-white border border-gray-300 text-gray-700 text-base font-medium py-2.5 px-5 rounded-full transition-colors duration-200 hover:border-gray-900 hover:text-gray-900 cursor-pointer no-underline"
             >
