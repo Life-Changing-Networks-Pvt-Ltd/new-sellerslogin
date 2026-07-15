@@ -33,10 +33,26 @@ export interface ChatMessage {
 export interface GetChatResponse {
   success: boolean;
   data: {
-    chat: any;
+    chat: {
+      status: string;
+      lastMessage?: string;
+      [key: string]: unknown;
+    };
     messages: ChatMessage[];
   };
 }
+
+export interface ChatWelcomeResponse {
+  success: boolean;
+  data: {
+    message: string;
+  };
+}
+
+export const getChatWelcomeMessage = async (): Promise<ChatWelcomeResponse> => {
+  const res = await chatApi.get("/welcome");
+  return res.data;
+};
 
 export const createCustomerChat = async (payload: {
   name: string;
