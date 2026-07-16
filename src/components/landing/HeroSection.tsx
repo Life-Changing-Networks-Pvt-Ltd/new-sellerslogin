@@ -20,17 +20,14 @@ export function HeroSection() {
       <div className="pointer-events-none absolute inset-0 z-0 bg-black/60" />
       <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center px-4 py-20 text-center sm:px-6 md:py-28 lg:px-8">
         <h1 className="mb-6 text-[clamp(40px,6vw,72px)] font-bold leading-[1.1] tracking-tight text-white">
-          The World&apos;s Most Advance{" "}
-          <span className="text-purple-600">AI Powered Online Store</span>
-          <br className="hidden sm:block" />
-          {" "}with Automations
-          <span className="animate-pulse" aria-hidden="true">|</span>
+          Advanced AI Tools Every Seller Needs |{" "}
+          <span className="text-purple-600">Adopt</span> Today for Business
+          Growth
         </h1>
 
         <p className="reveal reveal-delay-1 mx-auto mb-10 max-w-2xl text-base font-normal leading-relaxed text-white md:text-lg lg:text-xl">
-          The all-in-one e-commerce platform trusted by many businesses
-          worldwide. Create, manage, and scale your online store with powerful
-          automations and marketing tools.
+          Perfect for B2B, B2C, and all business segments. The ultimate AI
+          toolkit to grow your sales and elevate your brand value Today
         </p>
 
         <div className="reveal reveal-delay-2 mb-12 flex w-full flex-col items-center justify-center gap-4 sm:w-auto sm:flex-row">
