@@ -21,12 +21,12 @@ export function HeroSection() {
       <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center px-4 py-20 text-center sm:px-6 md:py-28 lg:px-8">
         <h1 className="mb-6 text-[clamp(40px,6vw,72px)] font-bold leading-[1.1] tracking-tight text-white">
           Advanced AI Tools Every Seller Needs |{" "}
-          <span className="text-purple-600">Adopt</span> Today for Business
-          Growth
+          <span className="text-purple-600">Adopt Today for Business
+          Growth</span>
         </h1>
 
         <p className="reveal reveal-delay-1 mx-auto mb-10 max-w-2xl text-base font-normal leading-relaxed text-white md:text-lg lg:text-xl">
-          Perfect for B2B, B2C, and all business segments. The ultimate AI
+          Perfect for B2B, B2C and all business segments. The ultimate AI
           toolkit to grow your sales and elevate your brand value Today
         </p>
 
