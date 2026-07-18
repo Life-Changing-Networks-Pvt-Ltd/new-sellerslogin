@@ -47,7 +47,7 @@ export function ContactCardsSection() {
           Contact us
         </h2>
         <p className="mt-4 text-lg text-slate-600">
-          Get personalized help from a qualified expert
+          Get Personalized help from a qualified expert
         </p>
       </div>
 
