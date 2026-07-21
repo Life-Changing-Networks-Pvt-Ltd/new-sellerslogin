@@ -48,6 +48,7 @@ export function NeedHelpButton() {
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [messages, setMessages] = useState<ConversationMessage[]>([]);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const dialogRef = useRef<HTMLElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
 
   const loadContent = useCallback(async () => {
@@ -74,6 +75,22 @@ export function NeedHelpButton() {
     const timeout = window.setTimeout(() => setToastMessage(null), 2600);
     return () => window.clearTimeout(timeout);
   }, [toastMessage]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (
+        event.target instanceof Node &&
+        !dialogRef.current?.contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [isOpen]);
 
   const openChat = () => {
     setSelectedTopicId(null);
@@ -130,6 +147,7 @@ export function NeedHelpButton() {
       <AnimatePresence>
         {isOpen ? (
           <motion.section
+            ref={dialogRef}
             role="dialog"
             aria-modal="false"
             aria-label="Sellers Login help chat"
