@@ -1,9 +1,9 @@
-# *
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /vendor/
+Disallow: /api/
+Disallow: /track-order
 
-# *
-User-agent: *
-Disallow: /admin
-Disallow: /vendor
+Sitemap: https://www.sellerslogin.com/sitemap-pages.xml
 
