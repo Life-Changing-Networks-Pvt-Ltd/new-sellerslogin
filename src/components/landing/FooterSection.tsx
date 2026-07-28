@@ -34,6 +34,8 @@ const footerColumns = [
         "AI Voice Automation",
         "Email Automation",
         "Whatsapp Automation",
+        "Virtual Numbers",
+        "Whatsapp Features",
       ],
     },
   ],
@@ -104,6 +106,8 @@ const footerHrefByLabel: Record<string, string> = {
   "User Data Deletion": "/data-deletion",
   "About Sellers Login": "/about",
   "Careers": "/careers",
+  "Virtual Numbers": "/virtual-numbers",
+  "Whatsapp Features": "/whatsapp-features",
   ...Object.values(navPageGroups)
     .flat()
     .reduce<Record<string, string>>((links, item) => {
