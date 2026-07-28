@@ -19,6 +19,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
   },
+  verification: {
+    google: "XG1__8RDXJOQgYPW6k4uOtK11cCaPaxPUNJcSgs36go",
+  },
   other: {
     "facebook-domain-verification": "7i0cyqq95aam0ac12gsywt3niirx2z",
   },
