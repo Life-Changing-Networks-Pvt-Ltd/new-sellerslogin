@@ -106,8 +106,8 @@ const footerHrefByLabel: Record<string, string> = {
   "User Data Deletion": "/data-deletion",
   "About Sellers Login": "/about",
   "Careers": "/careers",
-  "Virtual Numbers": "/virtual-numbers",
-  "Whatsapp Business API": "/whatsapp-features",
+  "Virtual Numbers": "/buy-virtual-numbers-for-business",
+  "Whatsapp Business API": "/whatsapp-business-api-messaging-dashboard",
   ...Object.values(navPageGroups)
     .flat()
     .reduce<Record<string, string>>((links, item) => {

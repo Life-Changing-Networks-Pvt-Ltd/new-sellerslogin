@@ -4,7 +4,7 @@ const siteUrl = (
 
 const routes = [
   "", "/about", "/pricing", "/contact", "/complete-features",
-  "/virtual-numbers", "/whatsapp-features", "/live-chat", "/careers",
+  "/buy-virtual-numbers-for-business", "/whatsapp-business-api-messaging-dashboard", "/live-chat", "/careers",
   "/features/website-builder", "/features/store-management",
   "/features/inventory-tracking", "/features/delivery-management",
   "/features/analytics-dashboard", "/features/payment-integration",

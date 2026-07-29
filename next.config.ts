@@ -4,6 +4,20 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   poweredByHeader: false,
   compress: true,
+  async redirects() {
+    return [
+      {
+        source: "/virtual-numbers",
+        destination: "/buy-virtual-numbers-for-business",
+        permanent: true,
+      },
+      {
+        source: "/whatsapp-features",
+        destination: "/whatsapp-business-api-messaging-dashboard",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 30,
