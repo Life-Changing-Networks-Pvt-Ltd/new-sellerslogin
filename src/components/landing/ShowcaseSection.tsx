@@ -4,12 +4,12 @@ import Image from "next/image";
 import { useState, useCallback } from "react";
 
 const dashboards = [
-  { id: 1, label: "Analytics" },
-  { id: 2, label: "Delivery" },
-  { id: 3, label: "Payments" },
-  { id: 4, label: "E-mail Marketing" },
-  { id: 5, label: "Whatsapp Marketing" },
-  { id: 6, label: "Voice Marketing" },
+  { id: 1, label: "Analytics", aspectRatio: "1913 / 796" },
+  { id: 2, label: "Delivery", aspectRatio: "1918 / 877" },
+  { id: 3, label: "Payments", aspectRatio: "1916 / 821" },
+  { id: 4, label: "E-mail Marketing", aspectRatio: "1919 / 832" },
+  { id: 5, label: "Whatsapp Marketing", aspectRatio: "1909 / 882" },
+  { id: 6, label: "Voice Marketing", aspectRatio: "1917 / 877" },
 ];
 
 export function ShowcaseSection() {
@@ -70,8 +70,11 @@ export function ShowcaseSection() {
                 hidden={!isActive}
                 className={`tab-panel ${isActive ? "block" : "hidden"}`}
               >
-                <div className="md:bg-[#0f0f0f] rounded-2xl md:p-8 md:shadow-2xl border-none md:border md:border-white/10">
-                  <div className="relative w-full aspect-[16/10] md:aspect-video rounded-xl overflow-hidden border-none md:border md:border-white/10 bg-transparent md:bg-black md:shadow-inner">
+                <div className="bg-purple-200 rounded-2xl p-2 sm:p-3 md:p-4 shadow-xl border border-purple-300">
+                  <div
+                    className="relative w-full rounded-xl overflow-hidden border border-purple-300 bg-purple-200"
+                    style={{ aspectRatio: tab.aspectRatio }}
+                  >
                     <Image quality={60}
                       src={`/images/dashboard/d${tab.id}.png`}
                       alt={tab.label}

@@ -69,7 +69,7 @@ export const StickyScroll = ({
               </p>
               
               {/* Mobile image display */}
-              <div className="block lg:hidden mt-8 w-full max-w-md rounded-2xl overflow-hidden aspect-square sm:aspect-video relative">
+              <div className="block lg:hidden mt-8 w-full max-w-md rounded-2xl overflow-hidden aspect-[3/2] relative">
                  <div className="absolute inset-0">
                    {item.content ?? null}
                  </div>
@@ -81,7 +81,7 @@ export const StickyScroll = ({
       </div>
       <div
         className={cn(
-          "sticky top-32 hidden h-[380px] w-[650px] overflow-visible rounded-2xl lg:block",
+          "sticky top-32 hidden h-[380px] w-[570px] shrink-0 self-start overflow-visible rounded-2xl lg:block",
           contentClassName,
         )}
       >

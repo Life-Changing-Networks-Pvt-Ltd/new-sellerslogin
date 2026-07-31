@@ -41,12 +41,12 @@ export function ScrollProgressTabs({ tabs, className }: ScrollProgressTabsProps)
       style={{ height: `${(totalTabs + 1) * 70}vh` }}
       className={cn("relative w-full", className)}
     >
-      <div className="sticky top-24 w-full flex flex-col overflow-hidden items-center justify-start z-10 bg-black" style={{ height: 'calc(100vh - 96px)' }}>
+      <div className="sticky top-24 w-full flex flex-col overflow-hidden items-center justify-start z-10 bg-purple-200" style={{ height: 'calc(100vh - 96px)' }}>
         
         {/* The Progress Strip */}
         <div className="relative w-full max-w-4xl mx-auto px-4 sm:px-12 mb-8 pt-4">
           {/* Background Line */}
-          <div className="absolute top-[36px] md:top-[44px] left-8 sm:left-16 right-8 sm:right-16 h-1 bg-white/15 -translate-y-1/2 rounded-full" />
+          <div className="absolute top-[36px] md:top-[44px] left-8 sm:left-16 right-8 sm:right-16 h-1 bg-purple-300 -translate-y-1/2 rounded-full" />
           
           {/* Animated Fill Line */}
           <div className="absolute top-[36px] md:top-[44px] left-8 sm:left-16 right-8 sm:right-16 h-1 -translate-y-1/2 rounded-full overflow-hidden">
@@ -68,15 +68,15 @@ export function ScrollProgressTabs({ tabs, className }: ScrollProgressTabsProps)
                     className={cn(
                       "w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center font-bold text-sm md:text-base border-4 transition-all duration-300",
                       isActive 
-                        ? "bg-white border-purple-400 text-black shadow-md shadow-purple-500/20 scale-110" 
-                        : "bg-black border-white/20 text-gray-500"
+                        ? "bg-white border-purple-400 text-gray-900 shadow-md shadow-purple-500/20 scale-110" 
+                        : "bg-purple-100 border-purple-300 text-gray-500"
                     )}
                   >
                     {idx + 1}
                   </div>
                   <div className={cn(
                     "absolute top-14 hidden text-xs font-semibold transition-colors duration-300 whitespace-nowrap sm:block sm:text-sm",
-                    isCurrent ? "text-white" : (isActive ? "text-gray-300" : "text-gray-500")
+                    isCurrent ? "text-gray-900" : (isActive ? "text-gray-700" : "text-gray-500")
                   )}>
                     {tab.title}
                   </div>
