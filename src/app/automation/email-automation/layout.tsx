@@ -1,9 +1,9 @@
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
-  title: "Email Marketing Automation Software for Customer Engagement",
+  title: "Email Marketing Automation | Bulk Email Campaign & Email Marketing Platform",
   description:
-    "Build stronger customer relationships with personalized email campaigns that reach the right audience at the right time. Grow engagement and conversions with SellersLogin.",
+    "SellersLogin provides Email Marketing Automation Software that helps businesses create bulk email campaigns, automate customer communication, recover abandoned carts, and improve customer engagement from one platform.",
   path: "/automation/email-automation",
 });
 

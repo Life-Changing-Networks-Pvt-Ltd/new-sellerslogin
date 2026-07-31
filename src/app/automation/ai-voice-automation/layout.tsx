@@ -1,9 +1,9 @@
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
-  title: "AI Voice Automation Software for Smart Customer Communication",
+  title: "AI Voice Automation | AI Calling Software | AI Voice Agent for Customer Support",
   description:
-    "Deliver natural AI-powered voice interactions that save time and improve customer service. See how SellersLogin helps businesses communicate more efficiently at scale.",
+    "SellersLogin provides AI Voice Automation that helps businesses automate customer calls, order confirmations, appointment reminders, and customer support using intelligent AI voice agents.",
   path: "/automation/ai-voice-automation",
 });
 

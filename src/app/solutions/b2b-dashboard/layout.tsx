@@ -1,9 +1,9 @@
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
-  title: "B2B Business Dashboard Software for Wholesale Management",
+  title: "B2B Business Dashboard | Wholesale Management | Distributor Management Software",
   description:
-    "Simplify wholesale operations with a centralized dashboard for orders, inventory, and business performance. Grow your B2B business confidently with SellersLogin.",
+    "SellersLogin provides a B2B Business Dashboard with wholesale order management, distributor management, inventory tracking, customer management, and sales analytics for manufacturers and wholesalers.",
   path: "/solutions/b2b-dashboard",
 });
 

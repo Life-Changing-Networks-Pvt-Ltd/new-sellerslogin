@@ -1,9 +1,9 @@
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
-  title: "Delivery Management Software for Order Fulfillment & Logistics",
+  title: "Delivery Management | Order Tracking & Logistics Management Platform",
   description:
-    "Simplify deliveries from dispatch to doorstep with a smarter delivery management solution. SellersLogin helps you streamline logistics while keeping customers informed.",
+    "SellersLogin provides Delivery Management with order tracking, dispatch management, shipping partner integration, logistics management, delivery status updates, and business automation tools.",
   path: "/features/delivery-management",
 });
 

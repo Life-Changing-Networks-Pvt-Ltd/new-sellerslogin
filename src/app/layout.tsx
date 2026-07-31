@@ -9,6 +9,9 @@ import { SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: SITE_URL,
+  },
   title: "Sellers Login | Your Business Growth Partner | E-commerce Making Platform",
   description:
     "Sellers Login is the all-in-one e-commerce platform that helps businesses create, manage, and scale their online stores with professional websites, automation, marketing tools, and inventory management.",
@@ -17,6 +20,7 @@ export const metadata: Metadata = {
     description:
       "The all-in-one e-commerce platform for ambitious businesses. A professional store, advanced dashboard, and inbuilt global payments in one place.",
     type: "website",
+    url: SITE_URL,
   },
   twitter: {
     card: "summary_large_image",

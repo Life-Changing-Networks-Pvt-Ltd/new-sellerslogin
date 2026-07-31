@@ -1,9 +1,9 @@
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
-  title: "Payment Gateway Integration Software for Secure Online Payments",
+  title: "Payment Gateway Integration | Online Payment Gateway | Secure Payment Solution",
   description:
-    "Provide customers with a fast, secure, and hassle-free payment experience. SellersLogin makes payment integration simple, reliable, and ready to support your business growth.",
+    "SellersLogin provides Payment Gateway Integration with secure online payments, multiple payment gateway support, fast checkout, transaction management, and reliable payment processing for businesses.",
   path: "/features/payment-integration",
 });
 

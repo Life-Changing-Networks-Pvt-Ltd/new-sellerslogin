@@ -1,9 +1,9 @@
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
-  title: "Business Analytics Dashboard for Sales & Performance Insights",
+  title: "Business Analytics Dashboard | Sales Dashboard | Business Analytics Software",
   description:
-    "Turn your business data into actionable insights with real-time analytics and performance reports. Make smarter decisions faster with the SellersLogin Analytics Dashboard.",
+    "SellersLogin provides a Business Analytics Dashboard with sales reports, customer analytics, inventory insights, revenue tracking, and business intelligence to help businesses make smarter decisions.",
   path: "/features/analytics-dashboard",
 });
 

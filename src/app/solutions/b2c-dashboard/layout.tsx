@@ -1,9 +1,9 @@
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
-  title: "B2C Business Dashboard Software for Sales & Customer Management",
+  title: "B2C Business Dashboard | Customer Management | Sales Analytics Dashboard",
   description:
-    "Make informed business decisions with real-time insights into customers, sales, and performance. SellersLogin gives you everything you need in one smart dashboard.",
+    "SellersLogin provides a B2C Business Dashboard with customer management, sales analytics, inventory tracking, payment management, and business reporting to help online businesses grow efficiently.",
   path: "/solutions/b2c-dashboard",
 });
 

@@ -1,9 +1,9 @@
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
-  title: "Marketing Automation Software for eCommerce & Business Growth",
+  title: "Marketing Automation Platform | AI Marketing Automation Software | Automation Tools",
   description:
-    "Automate repetitive marketing tasks, engage customers across channels, and focus on growing your business. Discover how SellersLogin simplifies marketing with one powerful platform.",
+    "SellersLogin provides Marketing Automation Software with AI-powered marketing automation, email marketing, WhatsApp automation, lead management, and customer engagement tools to help businesses increase sales and business growth.",
   path: "/automation/marketing-automation",
 });
 

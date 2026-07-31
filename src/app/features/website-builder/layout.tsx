@@ -1,9 +1,9 @@
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
-  title: "AI Website Builder for eCommerce & Business Websites",
+  title: "AI Website Builder | eCommerce Website Builder | Business Website Builder",
   description:
-    "Launch a professional website in minutes with powerful design tools and built-in business features. Build, manage, and grow your online presence with SellersLogin.",
+    "SellersLogin provides an AI Website Builder that helps businesses create professional websites and online stores with responsive templates, SEO features, payment gateway integration, and business automation tools.",
   path: "/features/website-builder",
 });
 

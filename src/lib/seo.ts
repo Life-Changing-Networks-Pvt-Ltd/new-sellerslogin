@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 
-export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL || "https://www.sellerslogin.com"
-).replace(/\/+$/, "");
+export const SITE_URL = "https://www.sellerslogin.com";
 
 type PageMetadata = {
   title: string;

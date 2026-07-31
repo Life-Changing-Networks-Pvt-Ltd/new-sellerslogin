@@ -1,9 +1,9 @@
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
-  title: "Inventory Management Software for Real-Time Stock Tracking",
+  title: "Inventory Management | Stock Tracking & Warehouse Management System",
   description:
-    "Stay in control of your inventory with real-time stock visibility and smarter inventory management. See how SellersLogin helps you reduce errors and improve efficiency.",
+    "SellersLogin provides Inventory Management with real-time stock tracking, warehouse management, inventory control, purchase management, inventory reports, and business automation tools for growing businesses.",
   path: "/features/inventory-tracking",
 });
 
