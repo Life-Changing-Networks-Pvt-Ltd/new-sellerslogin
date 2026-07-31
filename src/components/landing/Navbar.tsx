@@ -123,7 +123,7 @@ export function Navbar() {
       <div className={`${scrolled ? "" : "max-w-7xl mx-auto"}`}>
         <div className="flex items-center justify-between h-16">
           <Link
-            href="/#hero"
+            href="/"
             className={`text-lg font-bold no-underline flex items-center gap-2 shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2 rounded-full transition-colors duration-200 ${
               scrolled ? "text-gray-900" : "text-white"
             }`}
@@ -136,7 +136,7 @@ export function Navbar() {
 
           <ul className="hidden lg:flex items-center gap-0.5 xl:gap-1 list-none">
             <li>
-              <Link href="/#hero" className={topLinkClass}>
+              <Link href="/" className={topLinkClass}>
                 Home
               </Link>
             </li>
@@ -232,7 +232,7 @@ export function Navbar() {
       >
         <div className="px-4 py-3 space-y-1">
           <Link
-            href="/#hero"
+            href="/"
             onClick={() => setMenuOpen(false)}
             className="block py-3 px-4 text-base font-medium text-gray-700 rounded-lg hover:bg-gray-50 hover:text-gray-900 no-underline transition-colors"
           >

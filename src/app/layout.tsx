@@ -4,9 +4,11 @@ import { WebsiteAnalyticsTracker } from "@/components/analytics/WebsiteAnalytics
 import "./globals.css";
 
 import { ClientProvider } from "@/components/ClientProvider";
+import { SITE_URL } from "@/lib/seo";
 
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Sellers Login | Your Business Growth Partner | E-commerce Making Platform",
   description:
     "Sellers Login is the all-in-one e-commerce platform that helps businesses create, manage, and scale their online stores with professional websites, automation, marketing tools, and inventory management.",

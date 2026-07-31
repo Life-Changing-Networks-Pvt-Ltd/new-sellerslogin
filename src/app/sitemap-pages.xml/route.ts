@@ -1,8 +1,6 @@
-const siteUrl = (
-  process.env.NEXT_PUBLIC_SITE_URL || "https://www.sellerslogin.com"
-).replace(/\/+$/, "");
+import { SITE_URL } from "@/lib/seo";
 
-const routes = [
+const routes = Array.from(new Set([
   "", "/about", "/pricing", "/contact", "/complete-features",
   "/buy-virtual-numbers-for-business", "/whatsapp-business-api-messaging-dashboard", "/live-chat", "/careers",
   "/features/website-builder", "/features/store-management",
@@ -22,7 +20,7 @@ const routes = [
   "/industries/professional-services", "/resources/testimonials",
   "/resources/blog", "/resources/faq", "/privacy", "/terms", "/returns",
   "/shipping", "/warranty", "/grievance", "/data-deletion",
-];
+]));
 
 const escapeXml = (value: string) =>
   value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -43,10 +41,8 @@ const priority = (route: string) => {
 };
 
 export function GET() {
-  const lastModified = new Date().toISOString();
   const urls = routes.map((route) => `  <url>
-    <loc>${escapeXml(`${siteUrl}${route}`)}</loc>
-    <lastmod>${lastModified}</lastmod>
+    <loc>${escapeXml(`${SITE_URL}${route}`)}</loc>
     <changefreq>${changeFrequency(route)}</changefreq>
     <priority>${priority(route)}</priority>
   </url>`).join("\n");

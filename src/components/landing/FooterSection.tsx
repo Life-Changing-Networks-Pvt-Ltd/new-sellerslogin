@@ -171,7 +171,7 @@ export function FooterSection() {
           
           <div className="lg:col-span-4 xl:col-span-4">
             <Link
-              href="/#hero"
+              href="/"
               className="inline-flex items-center gap-3 no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2 rounded-full relative"
             >
               <div className="relative w-12 h-12 bg-white rounded-xl shadow-sm overflow-hidden p-1.5 shrink-0">
