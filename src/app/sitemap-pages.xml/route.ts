@@ -25,6 +25,9 @@ const routes = Array.from(new Set([
 const escapeXml = (value: string) =>
   value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
+// Update this value when the public page set or its shared content changes.
+const lastModified = "2026-08-06";
+
 const changeFrequency = (route: string) => {
   if (!route) return "daily";
   if (route.startsWith("/industries/") || route.startsWith("/resources/")) return "monthly";
@@ -43,6 +46,7 @@ const priority = (route: string) => {
 export function GET() {
   const urls = routes.map((route) => `  <url>
     <loc>${escapeXml(`${SITE_URL}${route}`)}</loc>
+    <lastmod>${lastModified}</lastmod>
     <changefreq>${changeFrequency(route)}</changefreq>
     <priority>${priority(route)}</priority>
   </url>`).join("\n");
