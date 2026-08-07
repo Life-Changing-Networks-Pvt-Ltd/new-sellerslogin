@@ -26,7 +26,7 @@ const escapeXml = (value: string) =>
   value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 // Update this value when the public page set or its shared content changes.
-const lastModified = "2026-08-06";
+const lastModified = "2026-08-07";
 
 const changeFrequency = (route: string) => {
   if (!route) return "daily";
@@ -53,6 +53,11 @@ export function GET() {
 
   return new Response(
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`,
-    { headers: { "Content-Type": "application/xml; charset=utf-8" } },
+    {
+      headers: {
+        "Content-Type": "application/xml; charset=utf-8",
+        "Cache-Control": "public, max-age=0, must-revalidate",
+      },
+    },
   );
 }
