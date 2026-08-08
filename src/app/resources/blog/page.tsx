@@ -1,22 +1,11 @@
 import type { Metadata } from "next";
-import { OptionPage, type OptionPageContent } from "@/components/landing/OptionPage";
+import { BlogManager } from "@/components/blog/BlogManager";
 
 export const metadata: Metadata = {
   title: "Blog | Sellers Login",
-  description: "Commerce playbooks, automation ideas, and launch guidance from Sellers Login.",
-};
-
-const page: OptionPageContent = {
-  label: "Blog",
-  icon: "layout",
-  eyebrow: "Resource",
-  title: "Learn from Blog",
-  description: "Blog gives teams practical commerce playbooks, automation ideas, launch checklists, and growth guidance.",
-  highlights: ["Commerce playbooks", "Automation ideas", "Launch checklists"],
-  stats: [{ value: "Weekly", label: "insights" }, { value: "Practical", label: "guides" }, { value: "Growth", label: "focus" }],
-  outcomes: ["Clear guidance", "Practical examples", "Better decisions"],
+  description: "Commerce playbooks, automation ideas, and growth guidance from Sellers Login.",
 };
 
 export default function Page() {
-  return <OptionPage page={page} />;
+  return <BlogManager />;
 }

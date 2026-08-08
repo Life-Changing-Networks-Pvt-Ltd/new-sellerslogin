@@ -182,6 +182,11 @@ export function Navbar() {
                 </div>
               </div>
             </li>
+            {/* <li>
+              <Link href="/resources/blog" className={topLinkClass}>
+                Blog
+              </Link>
+            </li> */}
           </ul>
 
           <div className="hidden lg:flex items-center gap-3">
@@ -238,6 +243,13 @@ export function Navbar() {
           >
             Home
           </Link>
+          {/* <Link
+            href="/resources/blog"
+            onClick={() => setMenuOpen(false)}
+            className="block py-3 px-4 text-base font-medium text-gray-700 rounded-lg hover:bg-gray-50 hover:text-gray-900 no-underline transition-colors"
+          >
+            Blog
+          </Link> */}
 
           <MobileDropdown
             isOpen={mobileFeatureOpen}
