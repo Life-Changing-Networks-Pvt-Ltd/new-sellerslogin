@@ -76,6 +76,7 @@ const footerColumns = [
       links: [
         "About Sellers Login",
         "Careers",
+        "Blog",
       ],
     },
   ],
@@ -106,6 +107,7 @@ const footerHrefByLabel: Record<string, string> = {
   "User Data Deletion": "/data-deletion",
   "About Sellers Login": "/about",
   "Careers": "/careers",
+  "Blog": "/resources/blog",
   "Virtual Numbers": "/buy-virtual-numbers-for-business",
   "Whatsapp Business API": "/whatsapp-business-api-messaging-dashboard",
   ...Object.values(navPageGroups)
