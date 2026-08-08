@@ -5,7 +5,7 @@ import { BackToTop } from "@/components/landing/BackToTop";
 import { CookieConsent } from "@/components/landing/CookieConsent";
 import { FooterSection } from "@/components/landing/FooterSection";
 import { Navbar } from "@/components/landing/Navbar";
-import { NEXT_PUBLIC_BLOG_API_URL } from "@/config/variables";
+import { NEXT_PUBLIC_BLOG_API_URL, NEXT_PUBLIC_BLOG_FALLBACK_API_URL } from "@/config/variables";
 
 type BlogPost = {
   id: string;
@@ -20,6 +20,7 @@ type BlogPost = {
 type BlogForm = Omit<BlogPost, "id" | "createdAt">;
 
 const emptyForm: BlogForm = { title: "", excerpt: "", category: "Growth", author: "Sellers Login", imageUrl: "" };
+const blogApiUrls = [...new Set([NEXT_PUBLIC_BLOG_API_URL, NEXT_PUBLIC_BLOG_FALLBACK_API_URL].filter(Boolean))];
 
 function normalizePost(value: Partial<BlogPost> & { _id?: string }): BlogPost {
   return {
@@ -41,40 +42,58 @@ export function BlogManager() {
   const [status, setStatus] = useState("Connecting to the blog backend…");
 
   useEffect(() => {
-    if (!NEXT_PUBLIC_BLOG_API_URL) {
+    if (blogApiUrls.length === 0) {
       setStatus("Blog backend URL is not configured.");
       return;
     }
 
-    fetch(NEXT_PUBLIC_BLOG_API_URL)
-      .then(async (response) => {
-        if (!response.ok) throw new Error("Blog API unavailable");
-        const payload = await response.json();
-        const list = Array.isArray(payload) ? payload : payload.data;
-        if (!Array.isArray(list)) throw new Error("Unexpected blog API response");
-        const remotePosts = list.map(normalizePost);
-        setPosts(remotePosts);
-        setStatus("Synced with the blog backend.");
-      })
-      .catch(() => setStatus("Could not load posts from the blog backend."));
+    const loadPosts = async () => {
+      for (const apiUrl of blogApiUrls) {
+        try {
+          const response = await fetch(apiUrl);
+          if (!response.ok) throw new Error("Blog API unavailable");
+          const payload = await response.json();
+          const list = Array.isArray(payload) ? payload : payload.data;
+          if (!Array.isArray(list)) throw new Error("Unexpected blog API response");
+          const remotePosts = list.map(normalizePost);
+          setPosts(remotePosts);
+          setStatus(`Synced with ${new URL(apiUrl).host}.`);
+          return;
+        } catch {
+          // Try the hosted fallback when the local API is unavailable.
+        }
+      }
+      setStatus("Could not load posts from the blog backend.");
+    };
+
+    void loadPosts();
   }, []);
 
-  const sendToBackend = async (method: "POST" | "PATCH" | "DELETE", post?: BlogPost) => {
-    if (!NEXT_PUBLIC_BLOG_API_URL) return false;
-    const url = method === "POST" ? NEXT_PUBLIC_BLOG_API_URL : `${NEXT_PUBLIC_BLOG_API_URL.replace(/\/$/, "")}/${post?.id}`;
-    try {
-      const response = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: method === "DELETE" ? undefined : JSON.stringify(post),
-      });
-      if (!response.ok) throw new Error("Request failed");
-      setStatus("Synced with the blog backend.");
-      return true;
-    } catch {
-      setStatus("Could not save changes to the blog backend.");
-      return false;
+  const sendToBackend = async (method: "POST" | "PATCH" | "DELETE", post?: BlogPost): Promise<BlogPost | boolean> => {
+    for (const apiUrl of blogApiUrls) {
+      const url = method === "POST" ? apiUrl : `${apiUrl.replace(/\/$/, "")}/${post?.id}`;
+      try {
+        const response = await fetch(url, {
+          method,
+          headers: { "Content-Type": "application/json" },
+          body: method === "DELETE" ? undefined : JSON.stringify({
+            title: post?.title,
+            excerpt: post?.excerpt,
+            category: post?.category,
+            author: post?.author,
+            imageUrl: post?.imageUrl,
+          }),
+        });
+        if (!response.ok) throw new Error("Request failed");
+        setStatus(`Synced with ${new URL(apiUrl).host}.`);
+        if (method === "DELETE") return true;
+        return normalizePost(await response.json());
+      } catch {
+        // Continue to the next API URL.
+      }
     }
+    setStatus("Could not save changes to the blog backend.");
+    return false;
   };
 
   const openCreate = () => {
@@ -94,8 +113,9 @@ export function BlogManager() {
     const now = new Date().toISOString();
     const existing = posts.find((post) => post.id === editingId);
     const post: BlogPost = { id: editingId || crypto.randomUUID(), createdAt: existing?.createdAt || now, ...form };
-    const nextPosts = editingId ? posts.map((item) => (item.id === editingId ? post : item)) : [post, ...posts];
-    if (await sendToBackend(editingId ? "PATCH" : "POST", post)) {
+    const savedPost = await sendToBackend(editingId ? "PATCH" : "POST", post);
+    if (savedPost && typeof savedPost !== "boolean") {
+      const nextPosts = editingId ? posts.map((item) => (item.id === editingId ? savedPost : item)) : [savedPost, ...posts];
       setPosts(nextPosts);
       setIsEditorOpen(false);
     }
