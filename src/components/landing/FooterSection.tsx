@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ShieldCheck, ShieldAlert, Truck, Info, Briefcase, LifeBuoy, FileText, Building2 } from "lucide-react";
+import { ShieldCheck, ShieldAlert, Truck, Info, Briefcase, LifeBuoy, FileText, Building2, BookOpen } from "lucide-react";
 import { navPageGroups } from "@/data/navPages";
 import { NEXT_PUBLIC_API_URL } from "@/config/variables";
 
@@ -19,7 +19,8 @@ const labelIcons: Record<string, React.ReactNode> = {
   "Grievance Officer": <ShieldAlert className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5} />,
   "User Data Deletion": <ShieldAlert className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5} />,
   "About Sellers Login": <Info className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5} />,
-  "Careers": <Briefcase className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5} />
+  "Careers": <Briefcase className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5} />,
+  "Blogs": <BookOpen className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5}
 };
 
 const footerColumns = [
@@ -107,7 +108,7 @@ const footerHrefByLabel: Record<string, string> = {
   "User Data Deletion": "/data-deletion",
   "About Sellers Login": "/about",
   "Careers": "/careers",
-  "Blog": "/resources/blog",
+  "Blogs": "/resources/blog",
   "Virtual Numbers": "/buy-virtual-numbers-for-business",
   "Whatsapp Business API": "/whatsapp-business-api-messaging-dashboard",
   ...Object.values(navPageGroups)
