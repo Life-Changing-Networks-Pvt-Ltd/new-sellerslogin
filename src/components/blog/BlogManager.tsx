@@ -23,6 +23,24 @@ type BlogForm = Omit<BlogPost, "id" | "createdAt">;
 const emptyForm: BlogForm = { title: "", excerpt: "", category: "Growth", author: "Sellers Login", imageUrl: "" };
 const blogApiUrls = [...new Set([NEXT_PUBLIC_BLOG_API_URL, NEXT_PUBLIC_BLOG_FALLBACK_API_URL].filter(Boolean))];
 
+const fontDisplay = "font-['Fraunces',_serif]";
+const fontBody = "font-['Source_Serif_4',_serif]";
+const fontMono = "font-['JetBrains_Mono',_monospace]";
+
+// Rotating tint per category: a filing-tab color, not a status color.
+const CATALOG_TINTS = ["#E8A33D", "#0F5132", "#35507A", "#B54834", "#6B3F69", "#1E6E6E"];
+function categoryTint(category: string): string {
+  let hash = 0;
+  for (let i = 0; i < category.length; i++) hash = hash * 31 + category.charCodeAt(i);
+  return CATALOG_TINTS[Math.abs(hash) % CATALOG_TINTS.length];
+}
+
+function statusDotColor(status: string): string {
+  if (status.startsWith("Synced")) return "bg-[#0F5132]";
+  if (status.includes("Connecting")) return "bg-[#E8A33D]";
+  return "bg-[#B54834]";
+}
+
 function normalizePost(value: Partial<BlogPost> & { _id?: string }): BlogPost {
   return {
     id: value.id || value._id || crypto.randomUUID(),
@@ -40,8 +58,9 @@ export function BlogManager() {
   const [form, setForm] = useState<BlogForm>(emptyForm);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [drawerVisible, setDrawerVisible] = useState(false);
   const [status, setStatus] = useState(
-    blogApiUrls.length === 0 ? "Blog backend URL is not configured." : "Connecting to the blog backend…",
+    blogApiUrls.length === 0 ? "Blog backend URL is not configured." : "Connecting to the blog backend...",
   );
 
   useEffect(() => {
@@ -68,6 +87,14 @@ export function BlogManager() {
 
     void loadPosts();
   }, []);
+
+  // Slide the editor drawer in on mount, out on close.
+  useEffect(() => {
+    if (isEditorOpen) {
+      const id = requestAnimationFrame(() => setDrawerVisible(true));
+      return () => cancelAnimationFrame(id);
+    }
+  }, [isEditorOpen]);
 
   const sendToBackend = async (method: "POST" | "PATCH" | "DELETE", post?: BlogPost): Promise<BlogPost | boolean> => {
     for (const apiUrl of blogApiUrls) {
@@ -99,12 +126,14 @@ export function BlogManager() {
   const openCreate = () => {
     setEditingId(null);
     setForm(emptyForm);
+    setDrawerVisible(false);
     setIsEditorOpen(true);
   };
 
   const openEdit = (post: BlogPost) => {
     setEditingId(post.id);
     setForm({ title: post.title, excerpt: post.excerpt, category: post.category, author: post.author, imageUrl: post.imageUrl });
+    setDrawerVisible(false);
     setIsEditorOpen(true);
   };
 
@@ -122,37 +151,291 @@ export function BlogManager() {
   };
 
   const removePost = async (post: BlogPost) => {
-    if (!window.confirm(`Delete “${post.title}”?`)) return;
+    if (!window.confirm(`Delete "${post.title}"?`)) return;
     if (await sendToBackend("DELETE", post)) setPosts(posts.filter((item) => item.id !== post.id));
   };
+
+  const latestDate = posts[0]?.createdAt ? new Date(posts[0].createdAt).toLocaleDateString() : "Drafting now";
 
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gray-50 px-4 pb-20 pt-28 sm:px-6 lg:px-8">
-        <section className="mx-auto max-w-7xl">
-          <div className="rounded-3xl bg-gray-950 px-6 py-12 text-white shadow-xl sm:px-10 sm:py-16">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-purple-200">Sellers Login blog</p>
-            <div className="mt-4 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-              <div className="max-w-3xl"><h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Ideas that help your business grow.</h1><p className="mt-4 text-lg leading-relaxed text-gray-300">Create, update, and manage your team’s commerce stories in one simple space.</p></div>
-              <button onClick={openCreate} className="shrink-0 rounded-full bg-purple-200 px-6 py-3 text-sm font-bold text-gray-950 transition hover:bg-purple-300">+ New post</button>
+      <main className="relative min-h-screen overflow-hidden bg-[#EFE7D8] text-[#22282B]">
+        <div
+          className="pointer-events-none fixed inset-0 z-10 opacity-[0.28] mix-blend-multiply"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(0deg, rgba(0,0,0,0.015) 0px, transparent 1px, transparent 2px, rgba(0,0,0,0.015) 3px), repeating-linear-gradient(90deg, rgba(0,0,0,0.01) 0px, transparent 1px, transparent 3px, rgba(0,0,0,0.01) 4px)",
+          }}
+        />
+
+        <section className="mx-auto max-w-[1180px] px-4 pb-16 pt-32 sm:px-6 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-[1fr_230px] lg:items-start">
+            <div>
+              <span className={`${fontMono} text-xs font-medium uppercase tracking-[0.18em] text-[#3F5A46]`}>
+                Vol. SL - commerce reading journal
+              </span>
+              <h1 className={`${fontDisplay} mt-5 max-w-[15ch] text-5xl font-light leading-[1.04] tracking-tight text-[#22282B] sm:text-7xl`}>
+                Notes from the
+                <span className="relative mx-2 inline-block text-[#3F5A46] italic">
+                  margins
+                  <svg className="absolute -bottom-2 left-0 h-3 w-full" viewBox="0 0 200 10" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="M2 6 Q 20 2 40 6 T 80 6 T 120 6 T 160 6 T 198 6" stroke="#A93F2E" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                  </svg>
+                </span>
+                of modern selling.
+              </h1>
+              <p className={`${fontBody} mt-8 max-w-[46ch] text-lg leading-8 text-[#4A5256]`}>
+                Practical essays on commerce, automation, customer journeys, and the operating notes worth underlining twice.
+              </p>
+              <div className="mt-10 flex flex-wrap items-center gap-5">
+                <a href="#essays" className={`${fontMono} bg-[#22282B] px-6 py-3.5 text-sm text-[#EFE7D8] transition hover:bg-[#3F5A46]`}>
+                  Read the latest issue
+                </a>
+                <button onClick={openCreate} className={`${fontMono} border-b border-dashed border-[#4A5256] pb-1 text-sm text-[#4A5256] transition hover:border-[#A93F2E] hover:text-[#A93F2E]`}>
+                  Create new note -&gt;
+                </button>
+              </div>
+            </div>
+
+            <aside className="flex flex-wrap gap-7 pt-2 lg:block">
+              {[
+                ["cf.", `${posts.length} published notes`],
+                ["NB:", "built for operators"],
+                ["see also", "full article archive"],
+              ].map(([label, text], index) => (
+                <div key={text} className={`${fontMono} relative mb-0 max-w-[210px] pl-5 text-xs leading-6 text-[#A93F2E] opacity-0 animate-[fadeUp_0.6s_ease_forwards] lg:mb-8`} style={{ animationDelay: `${0.4 + index * 0.18}s` }}>
+                  <span className="absolute left-0 top-1 h-3 w-3 rotate-[-25deg] border-b-2 border-l-2 border-[#A93F2E]" />
+                  <span>{label} </span><b className="font-medium text-[#22282B]">{text}</b>
+                </div>
+              ))}
+            </aside>
+          </div>
+        </section>
+
+        <div className={`${fontMono} mx-auto hidden max-w-[1180px] flex-wrap justify-between gap-3 border-y border-[#C9BEA4] px-4 py-5 text-xs tracking-wide text-[#4A5256] sm:flex sm:px-6 lg:px-8`}>
+          <span>SELLERSLOGIN JOURNAL</span>
+          <span>{String(posts.length).padStart(3, "0")} ARTICLES</span>
+          <span>UPDATED {latestDate.toUpperCase()}</span>
+          <span className="flex items-center gap-2"><span className={`h-2 w-2 rounded-full ${statusDotColor(status)} ${status.includes("Connecting") ? "animate-pulse" : ""}`} />{status}</span>
+        </div>
+
+        <section id="essays" className="mx-auto max-w-[1180px] px-4 py-16 sm:px-6 lg:px-8">
+          <div className="mb-12 flex flex-wrap items-baseline justify-between gap-5">
+            <h2 className={`${fontDisplay} text-4xl font-light tracking-tight text-[#22282B]`}>From the current issue</h2>
+            <span className={`${fontMono} text-xs font-medium uppercase tracking-[0.18em] text-[#3F5A46]`}>Issue No. {String(Math.max(posts.length, 1)).padStart(2, "0")}</span>
+          </div>
+
+          {posts.length > 0 && (
+            <div className="grid border-t border-[#C9BEA4] md:grid-cols-2 xl:grid-cols-3">
+              {posts.map((post, index) => {
+                const tint = categoryTint(post.category);
+                return (
+                  <article
+                    key={post.id}
+                    className={`group relative border-b border-[#C9BEA4] bg-transparent p-8 transition hover:bg-[#E4DAC5] xl:border-r ${
+                      (index + 1) % 3 === 0 ? "xl:border-r-0" : ""
+                    }`}
+                  >
+                    <Link
+                      href={`/resources/blog/${encodeURIComponent(post.id)}`}
+                      className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#A93F2E] focus-visible:ring-offset-4"
+                    >
+                      <span className={`${fontMono} mb-5 block text-xs text-[#3F5A46]`}>{["i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix"][index] || `${index + 1}.`}</span>
+                      <h3 className={`${fontDisplay} text-2xl font-light leading-snug tracking-tight text-[#22282B]`}>{post.title}</h3>
+                      <p className={`${fontBody} mt-4 line-clamp-4 text-base leading-7 text-[#4A5256]`}>{post.excerpt}</p>
+                      <div className={`${fontMono} mt-6 flex justify-between gap-4 border-t border-dashed border-[#C9BEA4] pt-4 text-xs text-[#4A5256]`}>
+                        <span style={{ color: tint }}>{post.category}</span>
+                        <time>{new Date(post.createdAt).toLocaleDateString()}</time>
+                      </div>
+                    </Link>
+
+                    <div className="mt-5 flex gap-4">
+                      <button
+                        onClick={() => openEdit(post)}
+                        className={`${fontMono} text-xs uppercase tracking-wide text-[#4A5256] transition hover:text-[#3F5A46]`}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => removePost(post)}
+                        className={`${fontMono} text-xs uppercase tracking-wide text-[#A93F2E] transition hover:text-[#7C2D22]`}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+
+          {posts.length === 0 && (
+            <div className="mt-8 rounded-2xl border border-dashed border-[#DDD8CC] bg-white p-12 text-center">
+              <p className={`${fontMono} text-xs uppercase tracking-[0.3em] text-[#8A8477]`}>Ledger empty</p>
+              <p className={`${fontBody} mx-auto mt-3 max-w-sm text-base text-[#4B5259]`}>
+                No posts found. Add a blog backend URL or create your first post.
+              </p>
+              <button
+                onClick={openCreate}
+                className={`${fontDisplay} mt-6 rounded-full bg-[#1B1F23] px-6 py-2.5 text-sm font-bold text-white transition hover:bg-[#0F5132]`}
+              >
+                Create the first entry
+              </button>
+            </div>
+          )}
+        </section>
+
+        <section className="mx-auto grid max-w-[1180px] grid-cols-[44px_1fr] gap-5 px-4 pb-20 sm:px-6 lg:px-8">
+          <div className={`${fontDisplay} text-7xl font-light leading-none text-[#3F5A46]/60`}>&quot;</div>
+          <div>
+            <blockquote className={`${fontDisplay} max-w-[26ch] text-3xl font-light italic leading-snug text-[#22282B] sm:text-4xl`}>
+              A useful commerce note should change what you do before lunch.
+            </blockquote>
+            <div className={`${fontMono} mt-5 text-xs text-[#4A5256]`}>- from the Sellers Login operating desk</div>
+          </div>
+        </section>
+
+        <section className="bg-[#22282B] px-4 py-16 text-[#EFE7D8] sm:px-6 lg:px-8">
+          <div className="mx-auto grid max-w-[1180px] gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+            <div>
+              <h2 className={`${fontDisplay} max-w-[17ch] text-4xl font-light leading-tight tracking-tight sm:text-5xl`}>
+                Publish the next field note for your readers.
+              </h2>
+              <p className={`${fontBody} mt-5 max-w-[44ch] text-base leading-7 text-[#C9C2AF]`}>
+                Keep the archive moving with practical ideas, launch notes, and playbooks your sellers can return to.
+              </p>
+            </div>
+            <div>
+              <button onClick={openCreate} className={`${fontMono} w-full border-b border-[#EFE7D8] pb-4 text-left text-sm tracking-wide transition hover:text-[#E8A33D]`}>
+                Start a new article -&gt;
+              </button>
+              <p className={`${fontMono} mt-4 text-xs text-[#8A8470]`}>Draft, preview image, category, author, then publish.</p>
             </div>
           </div>
-          <p className="mt-5 text-sm text-gray-500" aria-live="polite">{status}</p>
-          <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {posts.map((post) => <article key={post.id} className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-              <Link href={`/resources/blog/${encodeURIComponent(post.id)}`} className="block focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2">
-                <div className="h-44 bg-linear-to-br from-purple-100 via-white to-indigo-100">{post.imageUrl && <img src={post.imageUrl} alt="" className="h-full w-full object-cover" />}</div>
-                <div className="p-6 pb-0"><div className="flex items-center justify-between gap-3"><span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-bold text-purple-700">{post.category}</span><time className="text-xs text-gray-500">{new Date(post.createdAt).toLocaleDateString()}</time></div><h2 className="mt-4 text-xl font-bold leading-snug text-gray-950">{post.title}</h2><p className="mt-3 line-clamp-3 text-sm leading-relaxed text-gray-600">{post.excerpt}</p><p className="mt-5 text-sm font-medium text-gray-700">By {post.author}</p><p className="mt-4 text-sm font-bold text-purple-700">Read full article</p></div>
-              </Link>
-              <div className="mx-6 mt-5 flex gap-3 border-t border-gray-100 pb-6 pt-4"><button onClick={() => openEdit(post)} className="text-sm font-bold text-purple-700 hover:text-purple-900">Edit</button><button onClick={() => removePost(post)} className="text-sm font-bold text-red-600 hover:text-red-800">Delete</button></div>
-            </article>)}
-          </div>
-          {posts.length === 0 && <div className="mt-8 rounded-2xl border border-dashed border-gray-300 bg-white p-12 text-center text-gray-600">No posts found. Add a blog backend URL or create your first post.</div>}
         </section>
       </main>
-      {isEditorOpen && <div className="fixed inset-0 z-[60] flex items-center justify-center bg-gray-950/60 p-4" role="dialog" aria-modal="true" aria-label="Blog post editor"><form onSubmit={submit} className="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl"><div className="flex items-center justify-between"><h2 className="text-2xl font-bold text-gray-950">{editingId ? "Edit post" : "New post"}</h2><button type="button" onClick={() => setIsEditorOpen(false)} className="text-gray-500 hover:text-gray-950" aria-label="Close editor">✕</button></div><div className="mt-6 grid gap-4"><label className="text-sm font-semibold text-gray-700">Title<input required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="mt-1.5 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-950" /></label><label className="text-sm font-semibold text-gray-700">Excerpt<textarea required rows={4} value={form.excerpt} onChange={(e) => setForm({ ...form, excerpt: e.target.value })} className="mt-1.5 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-950" /></label><div className="grid gap-4 sm:grid-cols-2"><label className="text-sm font-semibold text-gray-700">Category<input required value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="mt-1.5 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-950" /></label><label className="text-sm font-semibold text-gray-700">Author<input required value={form.author} onChange={(e) => setForm({ ...form, author: e.target.value })} className="mt-1.5 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-950" /></label></div><label className="text-sm font-semibold text-gray-700">Image URL <span className="font-normal text-gray-400">(optional)</span><input value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} placeholder="https://..." className="mt-1.5 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-950" /></label></div><div className="mt-6 flex justify-end gap-3"><button type="button" onClick={() => setIsEditorOpen(false)} className="rounded-full px-5 py-2.5 text-sm font-bold text-gray-700 hover:bg-gray-100">Cancel</button><button type="submit" className="rounded-full bg-purple-200 px-5 py-2.5 text-sm font-bold text-gray-950 hover:bg-purple-300">{editingId ? "Save changes" : "Publish post"}</button></div></form></div>}
-      <FooterSection /><BackToTop /><CookieConsent />
+
+      {/* Editor: slide-over ledger sheet */}
+      {isEditorOpen && (
+        <div
+          className="fixed inset-0 z-[60] flex justify-end bg-[#1B1F23]/50 backdrop-blur-[2px]"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Blog post editor"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setIsEditorOpen(false);
+          }}
+        >
+          <form
+            onSubmit={submit}
+            className={`flex h-full w-full max-w-md flex-col overflow-y-auto bg-[#F7F5F0] shadow-2xl transition-transform duration-300 ease-out sm:max-w-lg ${
+              drawerVisible ? "translate-x-0" : "translate-x-full"
+            }`}
+          >
+            <div className="flex items-center justify-between border-b border-[#DDD8CC] bg-white px-6 py-5">
+              <div>
+                <p className={`${fontMono} text-[10px] uppercase tracking-[0.3em] text-[#8A8477]`}>
+                  {editingId ? "Edit entry" : "New entry"}
+                </p>
+                <h2 className={`${fontDisplay} mt-1 text-2xl font-bold text-[#1B1F23]`}>
+                  {editingId ? "Edit post" : "New post"}
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsEditorOpen(false)}
+                className="rounded-full p-2 text-[#8A8477] transition hover:bg-[#F1EEE6] hover:text-[#1B1F23]"
+                aria-label="Close editor"
+              >
+                x
+              </button>
+            </div>
+
+            <div className="flex-1 space-y-6 px-6 py-6">
+              <label className="block">
+                <span className={`${fontMono} text-[11px] font-semibold uppercase tracking-wider text-[#8A8477]`}>Title</span>
+                <input
+                  required
+                  value={form.title}
+                  onChange={(e) => setForm({ ...form, title: e.target.value })}
+                  className={`${fontBody} mt-2 w-full border-b-2 border-[#DDD8CC] bg-transparent px-1 py-2 text-[#1B1F23] outline-none transition-colors focus:border-[#0F5132]`}
+                />
+              </label>
+
+              <label className="block">
+                <span className={`${fontMono} text-[11px] font-semibold uppercase tracking-wider text-[#8A8477]`}>Excerpt</span>
+                <textarea
+                  required
+                  rows={4}
+                  value={form.excerpt}
+                  onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
+                  className={`${fontBody} mt-2 w-full resize-none border-b-2 border-[#DDD8CC] bg-transparent px-1 py-2 text-[#1B1F23] outline-none transition-colors focus:border-[#0F5132]`}
+                />
+              </label>
+
+              <div className="grid gap-6 sm:grid-cols-2">
+                <label className="block">
+                  <span className={`${fontMono} text-[11px] font-semibold uppercase tracking-wider text-[#8A8477]`}>Category</span>
+                  <input
+                    required
+                    value={form.category}
+                    onChange={(e) => setForm({ ...form, category: e.target.value })}
+                    className={`${fontBody} mt-2 w-full border-b-2 border-[#DDD8CC] bg-transparent px-1 py-2 text-[#1B1F23] outline-none transition-colors focus:border-[#0F5132]`}
+                  />
+                </label>
+                <label className="block">
+                  <span className={`${fontMono} text-[11px] font-semibold uppercase tracking-wider text-[#8A8477]`}>Author</span>
+                  <input
+                    required
+                    value={form.author}
+                    onChange={(e) => setForm({ ...form, author: e.target.value })}
+                    className={`${fontBody} mt-2 w-full border-b-2 border-[#DDD8CC] bg-transparent px-1 py-2 text-[#1B1F23] outline-none transition-colors focus:border-[#0F5132]`}
+                  />
+                </label>
+              </div>
+
+              <label className="block">
+                <span className={`${fontMono} text-[11px] font-semibold uppercase tracking-wider text-[#8A8477]`}>
+                  Image URL <span className="font-normal normal-case text-[#B7B2A3]">(optional)</span>
+                </span>
+                <input
+                  value={form.imageUrl}
+                  onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+                  placeholder="https://..."
+                  className={`${fontBody} mt-2 w-full border-b-2 border-[#DDD8CC] bg-transparent px-1 py-2 text-[#1B1F23] outline-none transition-colors focus:border-[#0F5132]`}
+                />
+              </label>
+
+              {form.imageUrl && (
+                <div className="overflow-hidden rounded-xl border border-[#DDD8CC]">
+                  <img src={form.imageUrl} alt="" className="h-32 w-full object-cover" />
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-end gap-3 border-t border-[#DDD8CC] bg-white px-6 py-5">
+              <button
+                type="button"
+                onClick={() => setIsEditorOpen(false)}
+                className={`${fontDisplay} rounded-full px-5 py-2.5 text-sm font-bold text-[#4B5259] transition hover:bg-[#F1EEE6]`}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className={`${fontDisplay} rounded-full bg-[#0F5132] px-6 py-2.5 text-sm font-bold text-white transition hover:bg-[#0C4029]`}
+              >
+                {editingId ? "Save changes" : "Publish post"}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      <FooterSection />
+      <BackToTop />
+      <CookieConsent />
     </>
   );
 }

@@ -22,6 +22,9 @@ type BlogPost = {
 };
 
 const blogApiUrls = [...new Set([NEXT_PUBLIC_BLOG_API_URL, NEXT_PUBLIC_BLOG_FALLBACK_API_URL].filter(Boolean))];
+const fontDisplay = "font-['Fraunces',_serif]";
+const fontBody = "font-['Source_Serif_4',_serif]";
+const fontMono = "font-['JetBrains_Mono',_monospace]";
 
 function normalizePost(value: Partial<BlogPost> & { _id?: string }): BlogPost {
   return {
@@ -79,36 +82,96 @@ export function BlogArticle({ id }: { id: string }) {
   }, [id]);
 
   const articleText = useMemo(() => post?.content || post?.body || post?.article || post?.excerpt || "", [post]);
+  const paragraphs = useMemo(() => articleText.split(/\n{2,}/).map((paragraph) => paragraph.trim()).filter(Boolean), [articleText]);
+  const readingMinutes = Math.max(1, Math.ceil(articleText.split(/\s+/).filter(Boolean).length / 180));
 
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gray-50 px-4 pb-20 pt-28 sm:px-6 lg:px-8">
-        <article className="mx-auto max-w-4xl">
-          <Link href="/resources/blog" className="text-sm font-bold text-purple-700 hover:text-purple-900">
-            Back to blog
+      <main className="relative min-h-screen overflow-hidden bg-[#EFE7D8] text-[#22282B]">
+        <div
+          className="pointer-events-none fixed inset-0 z-10 opacity-[0.28] mix-blend-multiply"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(0deg, rgba(0,0,0,0.015) 0px, transparent 1px, transparent 2px, rgba(0,0,0,0.015) 3px), repeating-linear-gradient(90deg, rgba(0,0,0,0.01) 0px, transparent 1px, transparent 3px, rgba(0,0,0,0.01) 4px)",
+          }}
+        />
+        <article className="relative mx-auto max-w-[1180px] px-4 pb-20 pt-32 sm:px-6 lg:px-8">
+          <Link href="/resources/blog" className={`${fontMono} inline-block border-b border-dashed border-[#4A5256] pb-1 text-xs uppercase tracking-[0.12em] text-[#4A5256] transition hover:border-[#A93F2E] hover:text-[#A93F2E]`}>
+            Back to archive
           </Link>
           {post ? (
-            <div className="mt-8 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-              <div className="h-64 bg-linear-to-br from-purple-100 via-white to-indigo-100 sm:h-96">
-                {post.imageUrl && <img src={post.imageUrl} alt="" className="h-full w-full object-cover" />}
-              </div>
-              <div className="p-6 sm:p-10">
-                <div className="flex flex-wrap items-center gap-3">
-                  <span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-bold text-purple-700">{post.category}</span>
-                  <time className="text-sm text-gray-500">{new Date(post.createdAt).toLocaleDateString()}</time>
+            <>
+              <header className="grid gap-10 border-b border-[#C9BEA4] pb-14 pt-10 lg:grid-cols-[1fr_240px]">
+                <div>
+                  <div className={`${fontMono} flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.16em] text-[#3F5A46]`}>
+                    <span>{post.category}</span>
+                    <span className="h-px w-8 bg-[#C9BEA4]" />
+                    <time>{new Date(post.createdAt).toLocaleDateString()}</time>
+                  </div>
+                  <h1 className={`${fontDisplay} mt-6 max-w-[14ch] text-5xl font-light leading-[1.04] tracking-tight text-[#22282B] sm:text-7xl`}>
+                    {post.title}
+                  </h1>
+                  {post.excerpt && (
+                    <p className={`${fontBody} mt-8 max-w-[48ch] text-xl leading-9 text-[#4A5256]`}>
+                      {post.excerpt}
+                    </p>
+                  )}
                 </div>
-                <h1 className="mt-5 text-3xl font-bold leading-tight text-gray-950 sm:text-5xl">{post.title}</h1>
-                <p className="mt-4 text-sm font-medium text-gray-700">By {post.author}</p>
-                <div className="mt-8 space-y-5 text-base leading-8 text-gray-700 sm:text-lg">
-                  {articleText.split(/\n{2,}/).map((paragraph, index) => (
-                    <p key={index}>{paragraph}</p>
+
+                <aside className="space-y-7 pt-2">
+                  <div className={`${fontMono} relative pl-5 text-xs leading-6 text-[#A93F2E]`}>
+                    <span className="absolute left-0 top-1 h-3 w-3 rotate-[-25deg] border-b-2 border-l-2 border-[#A93F2E]" />
+                    NB: <b className="font-medium text-[#22282B]">article description</b>
+                  </div>
+                  <div className={`${fontMono} relative pl-5 text-xs leading-6 text-[#A93F2E]`}>
+                    <span className="absolute left-0 top-1 h-3 w-3 rotate-[-25deg] border-b-2 border-l-2 border-[#A93F2E]" />
+                    by <b className="font-medium text-[#22282B]">{post.author}</b>
+                  </div>
+                  <div className={`${fontMono} relative pl-5 text-xs leading-6 text-[#A93F2E]`}>
+                    <span className="absolute left-0 top-1 h-3 w-3 rotate-[-25deg] border-b-2 border-l-2 border-[#A93F2E]" />
+                    approx. <b className="font-medium text-[#22282B]">{readingMinutes} min read</b>
+                  </div>
+                </aside>
+              </header>
+
+              {post.imageUrl && (
+                <div className="my-12 overflow-hidden border-y border-[#C9BEA4] bg-[#E4DAC5] py-5">
+                  <img src={post.imageUrl} alt="" className="max-h-[520px] w-full object-cover" />
+                </div>
+              )}
+
+              <div className="grid gap-10 pt-4 lg:grid-cols-[minmax(0,720px)_1fr]">
+                <div className={`${fontBody} space-y-7 text-xl leading-10 text-[#22282B]`}>
+                  {paragraphs.map((paragraph, index) => (
+                    <p key={index} className={index === 0 ? "first-letter:float-left first-letter:mr-3 first-letter:font-['Fraunces',_serif] first-letter:text-7xl first-letter:leading-[0.85] first-letter:text-[#3F5A46]" : ""}>
+                      {paragraph}
+                    </p>
                   ))}
+                  {paragraphs.length === 0 && <p>No article description is available yet.</p>}
+                </div>
+
+                <aside className="hidden lg:block">
+                  <div className="sticky top-28 border-l border-[#C9BEA4] pl-6">
+                    <p className={`${fontMono} text-xs uppercase tracking-[0.18em] text-[#3F5A46]`}>Margin note</p>
+                    <blockquote className={`${fontDisplay} mt-4 text-2xl font-light italic leading-snug text-[#4A5256]`}>
+                      A useful commerce note should change what you do before lunch.
+                    </blockquote>
+                    <div className={`${fontMono} mt-6 border-t border-dashed border-[#C9BEA4] pt-4 text-xs text-[#4A5256]`}>
+                      Published in Sellers Login Journal
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+
+              <div className="mt-16 border-y border-[#C9BEA4] py-8">
+                <Link href="/resources/blog" className={`${fontMono} text-sm text-[#4A5256] transition hover:text-[#A93F2E]`}>
+                  Return to all notes -&gt;
+                </Link>
+              </div>
+            </>
           ) : (
-            <div className="mt-8 rounded-2xl border border-dashed border-gray-300 bg-white p-12 text-center text-gray-600" aria-live="polite">
+            <div className={`${fontBody} mt-10 border border-dashed border-[#C9BEA4] bg-[#F7F3E8] p-12 text-center text-lg text-[#4A5256]`} aria-live="polite">
               {status}
             </div>
           )}
