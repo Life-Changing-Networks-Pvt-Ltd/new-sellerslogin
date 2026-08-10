@@ -12,4 +12,4 @@ export const NEXT_PUBLIC_VENDOR_REGISTRATION_URL = process.env.NEXT_PUBLIC_VENDO
 // Endpoint used by the blog page for all CRUD operations.
 export const NEXT_PUBLIC_BLOG_API_URL = process.env.NEXT_PUBLIC_BLOG_API_URL || "http://localhost:8081/api/blogs";
 // Used when the local blog server is not reachable (for example, in a deployed frontend).
-export const NEXT_PUBLIC_BLOG_FALLBACK_API_URL = "https://naya-8ia9.onrender.com/api/blogs";
+export const NEXT_PUBLIC_BLOG_FALLBACK_API_URL = "https://demoapi.sellerslogin.com/api/blogs";
