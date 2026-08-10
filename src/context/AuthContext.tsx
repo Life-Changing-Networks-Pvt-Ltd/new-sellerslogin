@@ -1,0 +1,7 @@
+"use client";
+import { createContext, useContext, useEffect, useState } from "react";
+import * as authApi from "@/api/authApi";
+type AuthState = { user: authApi.BlogUser | null; loading: boolean; login: (email: string, password: string) => Promise<void>; register: (name: string, email: string, password: string) => Promise<void>; logout: () => void };
+const AuthContext = createContext<AuthState | undefined>(undefined);
+export function BlogAuthProvider({ children }: { children: React.ReactNode }) { const [user, setUser] = useState<authApi.BlogUser | null>(null); const [loading, setLoading] = useState(true); useEffect(() => { if (!localStorage.getItem("blog_token")) { setLoading(false); return; } authApi.getMe().then(setUser).catch(() => localStorage.removeItem("blog_token")).finally(() => setLoading(false)); }, []); const save = (response: authApi.AuthResponse) => { localStorage.setItem("blog_token", response.token); setUser(response.user); }; return <AuthContext.Provider value={{ user, loading, login: async (email, password) => save(await authApi.login({ email, password })), register: async (name, email, password) => save(await authApi.register({ name, email, password })), logout: () => { localStorage.removeItem("blog_token"); setUser(null); } }}>{children}</AuthContext.Provider>; }
+export const useBlogAuth = () => { const value = useContext(AuthContext); if (!value) throw new Error("useBlogAuth must be used inside BlogAuthProvider"); return value; };
