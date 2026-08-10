@@ -8,19 +8,19 @@ import { navPageGroups } from "@/data/navPages";
 import { NEXT_PUBLIC_API_URL } from "@/config/variables";
 
 const labelIcons: Record<string, React.ReactNode> = {
-  "Privacy Policy": <ShieldCheck className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5} />,
-  "Terms and Conditions": <ShieldAlert className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5} />,
-  "Shipping and Delivery": <Truck className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5} />,
-  "Return and Refund": <ShieldAlert className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5} />,
-  "Warranty Policy": <ShieldCheck className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5} />,
-  "Contact Us": <LifeBuoy className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5} />,
-  "Track Your Order": <FileText className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5} />,
-  "FAQs": <LifeBuoy className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5} />,
-  "Grievance Officer": <ShieldAlert className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5} />,
-  "User Data Deletion": <ShieldAlert className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5} />,
-  "About Sellers Login": <Info className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5} />,
-  "Careers": <Briefcase className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5} />,
-  "Blogs": <BookOpen className="w-4.5 h-4.5 text-gray-500" strokeWidth={1.5}
+  "Privacy Policy": <ShieldCheck className="w-4 h-4 text-purple-600" />,
+  "Terms and Conditions": <FileText className="w-4 h-4 text-purple-600" />,
+  "Shipping and Delivery": <Truck className="w-4 h-4 text-purple-600" />,
+  "Return and Refund": <ShieldAlert className="w-4 h-4 text-purple-600" />,
+  "Warranty Policy": <ShieldCheck className="w-4 h-4 text-purple-600" />,
+  "Contact Us": <LifeBuoy className="w-4 h-4 text-purple-600" />,
+  "Track Your Order": <Truck className="w-4 h-4 text-purple-600" />,
+  "FAQs": <Info className="w-4 h-4 text-purple-600" />,
+  "Grievance Officer": <Briefcase className="w-4 h-4 text-purple-600" />,
+  "User Data Deletion": <ShieldAlert className="w-4 h-4 text-purple-600" />,
+  "About Sellers Login": <Building2 className="w-4 h-4 text-purple-600" />,
+  "Careers": <Briefcase className="w-4 h-4 text-purple-600" />,
+  "Blog": <BookOpen className="w-4 h-4 text-purple-600" />,
 };
 
 const footerColumns = [
@@ -73,13 +73,13 @@ const footerColumns = [
       ],
     },
     {
-      title: "Company",
-      links: [
-        "About Sellers Login",
-        "Careers",
-        "Blog",
-      ],
-    },
+  title: "Company",
+  links: [
+    "About Sellers Login",
+    "Careers",
+    "Blog",
+  ],
+},
   ],
   // Column 4
   [
@@ -108,7 +108,7 @@ const footerHrefByLabel: Record<string, string> = {
   "User Data Deletion": "/data-deletion",
   "About Sellers Login": "/about",
   "Careers": "/careers",
-  "Blogs": "/resources/blog",
+  "Blog": "/resources/blog",
   "Virtual Numbers": "/buy-virtual-numbers-for-business",
   "Whatsapp Business API": "/whatsapp-business-api-messaging-dashboard",
   ...Object.values(navPageGroups)
@@ -277,3 +277,4 @@ export function FooterSection() {
     </footer>
   );
 }
+
