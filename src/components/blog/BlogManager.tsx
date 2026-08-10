@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import Link from "next/link";
 import { BackToTop } from "@/components/landing/BackToTop";
 import { CookieConsent } from "@/components/landing/CookieConsent";
 import { FooterSection } from "@/components/landing/FooterSection";
@@ -39,13 +40,12 @@ export function BlogManager() {
   const [form, setForm] = useState<BlogForm>(emptyForm);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
-  const [status, setStatus] = useState("Connecting to the blog backend…");
+  const [status, setStatus] = useState(
+    blogApiUrls.length === 0 ? "Blog backend URL is not configured." : "Connecting to the blog backend…",
+  );
 
   useEffect(() => {
-    if (blogApiUrls.length === 0) {
-      setStatus("Blog backend URL is not configured.");
-      return;
-    }
+    if (blogApiUrls.length === 0) return;
 
     const loadPosts = async () => {
       for (const apiUrl of blogApiUrls) {
@@ -141,8 +141,11 @@ export function BlogManager() {
           <p className="mt-5 text-sm text-gray-500" aria-live="polite">{status}</p>
           <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {posts.map((post) => <article key={post.id} className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-              <div className="h-44 bg-linear-to-br from-purple-100 via-white to-indigo-100">{post.imageUrl && <img src={post.imageUrl} alt="" className="h-full w-full object-cover" />}</div>
-              <div className="p-6"><div className="flex items-center justify-between gap-3"><span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-bold text-purple-700">{post.category}</span><time className="text-xs text-gray-500">{new Date(post.createdAt).toLocaleDateString()}</time></div><h2 className="mt-4 text-xl font-bold leading-snug text-gray-950">{post.title}</h2><p className="mt-3 line-clamp-3 text-sm leading-relaxed text-gray-600">{post.excerpt}</p><p className="mt-5 text-sm font-medium text-gray-700">By {post.author}</p><div className="mt-5 flex gap-3 border-t border-gray-100 pt-4"><button onClick={() => openEdit(post)} className="text-sm font-bold text-purple-700 hover:text-purple-900">Edit</button><button onClick={() => removePost(post)} className="text-sm font-bold text-red-600 hover:text-red-800">Delete</button></div></div>
+              <Link href={`/resources/blog/${encodeURIComponent(post.id)}`} className="block focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2">
+                <div className="h-44 bg-linear-to-br from-purple-100 via-white to-indigo-100">{post.imageUrl && <img src={post.imageUrl} alt="" className="h-full w-full object-cover" />}</div>
+                <div className="p-6 pb-0"><div className="flex items-center justify-between gap-3"><span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-bold text-purple-700">{post.category}</span><time className="text-xs text-gray-500">{new Date(post.createdAt).toLocaleDateString()}</time></div><h2 className="mt-4 text-xl font-bold leading-snug text-gray-950">{post.title}</h2><p className="mt-3 line-clamp-3 text-sm leading-relaxed text-gray-600">{post.excerpt}</p><p className="mt-5 text-sm font-medium text-gray-700">By {post.author}</p><p className="mt-4 text-sm font-bold text-purple-700">Read full article</p></div>
+              </Link>
+              <div className="mx-6 mt-5 flex gap-3 border-t border-gray-100 pb-6 pt-4"><button onClick={() => openEdit(post)} className="text-sm font-bold text-purple-700 hover:text-purple-900">Edit</button><button onClick={() => removePost(post)} className="text-sm font-bold text-red-600 hover:text-red-800">Delete</button></div>
             </article>)}
           </div>
           {posts.length === 0 && <div className="mt-8 rounded-2xl border border-dashed border-gray-300 bg-white p-12 text-center text-gray-600">No posts found. Add a blog backend URL or create your first post.</div>}
