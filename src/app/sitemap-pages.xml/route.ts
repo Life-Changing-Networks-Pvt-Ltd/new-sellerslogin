@@ -43,13 +43,49 @@ const priority = (route: string) => {
   return "0.8";
 };
 
-export function GET() {
-  const urls = routes.map((route) => `  <url>
+type BlogSitemapPost = {
+  slug?: string;
+  updatedAt?: string;
+  createdAt?: string;
+};
+
+const getBlogApiBaseUrl = () =>
+  (process.env.NEXT_PUBLIC_BLOG_API_URL || "http://localhost:8081/api").replace(/\/blogs\/?$/, "");
+
+const getBlogRoutes = async () => {
+  try {
+    const response = await fetch(`${getBlogApiBaseUrl()}/blogs?limit=50`, {
+      next: { revalidate: 3600 },
+    });
+    if (!response.ok) return [];
+
+    const data = (await response.json()) as { blogs?: BlogSitemapPost[] };
+    return (data.blogs || [])
+      .filter((post) => post.slug)
+      .map((post) => ({
+        route: `/resources/blog/${post.slug}`,
+        lastmod: (post.updatedAt || post.createdAt || lastModified).slice(0, 10),
+      }));
+  } catch {
+    return [];
+  }
+};
+
+export async function GET() {
+  const blogRoutes = await getBlogRoutes();
+  const staticUrls = routes.map((route) => `  <url>
     <loc>${escapeXml(`${SITE_URL}${route}`)}</loc>
     <lastmod>${lastModified}</lastmod>
     <changefreq>${changeFrequency(route)}</changefreq>
     <priority>${priority(route)}</priority>
-  </url>`).join("\n");
+  </url>`);
+  const blogUrls = blogRoutes.map(({ route, lastmod }) => `  <url>
+    <loc>${escapeXml(`${SITE_URL}${route}`)}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>`);
+  const urls = [...staticUrls, ...blogUrls].join("\n");
 
   return new Response(
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`,
