@@ -1,8 +1,163 @@
+// "use client";
+// import Link from "next/link";
+// import { useEffect, useState } from "react";
+// import { blogAssetUrl, getBlogs, type BlogPost } from "@/api/blogApi";
+// import { useBlogAuth } from "@/context/AuthContext";
+// import { Navbar } from "@/components/landing/Navbar";
+// import { FooterSection } from "@/components/landing/FooterSection";
+// export function BlogManager() { const [posts, setPosts] = useState<BlogPost[]>([]); const [error, setError] = useState(""); const [loading, setLoading] = useState(true); const { user, logout } = useBlogAuth(); useEffect(() => { getBlogs().then((data) => setPosts(data.blogs)).catch(() => setError("Unable to load blog posts.")).finally(() => setLoading(false)); }, []); return <><Navbar /><main className="min-h-screen bg-[#f7f4ec] px-5 pb-16 pt-28 text-slate-900"><div className="mx-auto max-w-6xl"><div className="mb-10 flex flex-wrap items-center justify-between gap-4"><div><p className="mb-2 text-sm font-semibold uppercase tracking-[.18em] text-[#0f5132]">Sellers Login journal</p><h1 className="text-4xl font-bold sm:text-5xl">Ideas for growing online.</h1></div><div className="flex gap-3">{user ? <><Link className="rounded border border-[#0f5132] px-4 py-2" href="/resources/blog/my">My posts</Link><Link className="rounded bg-[#0f5132] px-4 py-2 text-white" href="/resources/blog/create">Write a post</Link><button onClick={logout} className="px-2 text-sm underline">Log out</button></> : <><Link className="rounded border px-4 py-2" href="/resources/blog/login">Log in</Link><Link className="rounded bg-[#0f5132] px-4 py-2 text-white" href="/resources/blog/register">Become an author</Link></>}</div></div>{loading && <p>Loading posts...</p>}{error && <p className="text-red-700">{error}</p>}<section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{posts.map((post) => <article key={post.id || post._id} className="overflow-hidden rounded-xl bg-white shadow-sm">{post.image && <img src={blogAssetUrl(post.image)} alt="" className="h-44 w-full object-cover" />}<div className="p-5"><p className="text-sm text-slate-500">{new Date(post.createdAt).toLocaleDateString()} - {post.author?.name}</p><h2 className="mt-2 text-2xl font-semibold">{post.title}</h2><p className="mt-3 line-clamp-3 text-slate-600">{post.excerpt || post.content}</p><Link href={`/resources/blog/${post.slug}`} className="mt-5 inline-block font-medium text-[#0f5132]">Read article →</Link></div></article>)}</section>{!loading && !error && posts.length === 0 && <p>No published posts yet.</p>}</div></main><FooterSection /></>; }
+
 "use client";
+
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { blogAssetUrl, getBlogs, type BlogPost } from "@/api/blogApi";
+import {
+  blogAssetUrl,
+  getBlogs,
+  type BlogPost,
+} from "@/api/blogApi";
 import { useBlogAuth } from "@/context/AuthContext";
 import { Navbar } from "@/components/landing/Navbar";
 import { FooterSection } from "@/components/landing/FooterSection";
-export function BlogManager() { const [posts, setPosts] = useState<BlogPost[]>([]); const [error, setError] = useState(""); const [loading, setLoading] = useState(true); const { user, logout } = useBlogAuth(); useEffect(() => { getBlogs().then((data) => setPosts(data.blogs)).catch(() => setError("Unable to load blog posts.")).finally(() => setLoading(false)); }, []); return <><Navbar /><main className="min-h-screen bg-[#f7f4ec] px-5 pb-16 pt-28 text-slate-900"><div className="mx-auto max-w-6xl"><div className="mb-10 flex flex-wrap items-center justify-between gap-4"><div><p className="mb-2 text-sm font-semibold uppercase tracking-[.18em] text-[#0f5132]">Sellers Login journal</p><h1 className="text-4xl font-bold sm:text-5xl">Ideas for growing online.</h1></div><div className="flex gap-3">{user ? <><Link className="rounded border border-[#0f5132] px-4 py-2" href="/resources/blog/my">My posts</Link><Link className="rounded bg-[#0f5132] px-4 py-2 text-white" href="/resources/blog/create">Write a post</Link><button onClick={logout} className="px-2 text-sm underline">Log out</button></> : <><Link className="rounded border px-4 py-2" href="/resources/blog/login">Log in</Link><Link className="rounded bg-[#0f5132] px-4 py-2 text-white" href="/resources/blog/register">Become an author</Link></>}</div></div>{loading && <p>Loading posts...</p>}{error && <p className="text-red-700">{error}</p>}<section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{posts.map((post) => <article key={post.id || post._id} className="overflow-hidden rounded-xl bg-white shadow-sm">{post.image && <img src={blogAssetUrl(post.image)} alt="" className="h-44 w-full object-cover" />}<div className="p-5"><p className="text-sm text-slate-500">{new Date(post.createdAt).toLocaleDateString()} - {post.author?.name}</p><h2 className="mt-2 text-2xl font-semibold">{post.title}</h2><p className="mt-3 line-clamp-3 text-slate-600">{post.excerpt || post.content}</p><Link href={`/resources/blog/${post.slug}`} className="mt-5 inline-block font-medium text-[#0f5132]">Read article →</Link></div></article>)}</section>{!loading && !error && posts.length === 0 && <p>No published posts yet.</p>}</div></main><FooterSection /></>; }
+
+export function BlogManager() {
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  const { user, logout } = useBlogAuth();
+
+  useEffect(() => {
+    const loadBlogs = async () => {
+      try {
+        const data = await getBlogs();
+
+        // Handles { blogs: [...] }
+        // and prevents undefined.map() if the API response is malformed.
+        setPosts(Array.isArray(data?.blogs) ? data.blogs : []);
+      } catch (err) {
+        console.error("Failed to load blog posts:", err);
+        setError("Unable to load blog posts.");
+        setPosts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadBlogs();
+  }, []);
+
+  return (
+    <>
+      <Navbar />
+
+      <main className="min-h-screen bg-[#f7f4ec] px-5 pb-16 pt-28 text-slate-900">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <p className="mb-2 text-sm font-semibold uppercase tracking-[.18em] text-[#0f5132]">
+                Sellers Login journal
+              </p>
+
+              <h1 className="text-4xl font-bold sm:text-5xl">
+                Ideas for growing online.
+              </h1>
+            </div>
+
+            <div className="flex gap-3">
+              {user ? (
+                <>
+                  <Link
+                    className="rounded border border-[#0f5132] px-4 py-2"
+                    href="/resources/blog/my"
+                  >
+                    My posts
+                  </Link>
+
+                  <Link
+                    className="rounded bg-[#0f5132] px-4 py-2 text-white"
+                    href="/resources/blog/create"
+                  >
+                    Write a post
+                  </Link>
+
+                  <button
+                    onClick={logout}
+                    className="px-2 text-sm underline"
+                  >
+                    Log out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    className="rounded border px-4 py-2"
+                    href="/resources/blog/login"
+                  >
+                    Log in
+                  </Link>
+
+                  <Link
+                    className="rounded bg-[#0f5132] px-4 py-2 text-white"
+                    href="/resources/blog/register"
+                  >
+                    Become an author
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+
+          {loading && <p>Loading posts...</p>}
+
+          {error && <p className="text-red-700">{error}</p>}
+
+          <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {posts.map((post) => (
+              <article
+                key={post.id || post._id}
+                className="overflow-hidden rounded-xl bg-white shadow-sm"
+              >
+                {post.image && (
+                  <img
+                    src={blogAssetUrl(post.image)}
+                    alt={post.title}
+                    className="h-44 w-full object-cover"
+                  />
+                )}
+
+                <div className="p-5">
+                  <p className="text-sm text-slate-500">
+                    {new Date(post.createdAt).toLocaleDateString()} -{" "}
+                    {post.author?.name}
+                  </p>
+
+                  <h2 className="mt-2 text-2xl font-semibold">
+                    {post.title}
+                  </h2>
+
+                  <p className="mt-3 line-clamp-3 text-slate-600">
+                    {post.excerpt || post.content}
+                  </p>
+
+                  <Link
+                    href={`/resources/blog/${post.slug}`}
+                    className="mt-5 inline-block font-medium text-[#0f5132]"
+                  >
+                    Read article →
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </section>
+
+          {!loading && !error && posts.length === 0 && (
+            <p>No published posts yet.</p>
+          )}
+        </div>
+      </main>
+
+      <FooterSection />
+    </>
+  );
+}
