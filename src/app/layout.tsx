@@ -4,6 +4,7 @@ import { WebsiteAnalyticsTracker } from "@/components/analytics/WebsiteAnalytics
 import "./globals.css";
 
 import { ClientProvider } from "@/components/ClientProvider";
+import { BlogAuthProvider } from "@/context/AuthContext";
 import { SITE_URL } from "@/lib/seo";
 
 
@@ -41,12 +42,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-full antialiased font-sans">
-        <ClientProvider>
+        <ClientProvider><BlogAuthProvider>
           <Suspense fallback={null}>
             <WebsiteAnalyticsTracker />
           </Suspense>
           {children}
-        </ClientProvider>
+        </BlogAuthProvider></ClientProvider>
       </body>
     </html>
   );
