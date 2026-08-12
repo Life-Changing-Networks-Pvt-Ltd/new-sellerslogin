@@ -1,846 +1,997 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import {
+  RiArrowRightLine,
+  RiBarChartBoxLine,
+  RiCheckLine,
+  RiFlowChart,
+  RiMailLine,
+  RiMegaphoneLine,
+  RiPhoneLine,
+  RiStore2Line,
+  RiTeamLine,
+  RiUserHeartLine,
+  RiWhatsappLine,
+} from "react-icons/ri";
 import { BackToTop } from "@/components/landing/BackToTop";
 import { CustomCursor } from "@/components/landing/CustomCursor";
 import { FooterSection } from "@/components/landing/FooterSection";
 import { GlobalBackground } from "@/components/landing/GlobalBackground";
 import { Navbar } from "@/components/landing/Navbar";
-import { ScrollRevealInit } from "@/components/landing/ScrollRevealInit";
-import {
-  RiBarChartBoxLine,
-  RiShoppingCart2Line,
-  RiTeamLine,
-  RiFileChartLine,
-  RiArrowRightLine,
-  RiCheckLine,
-  RiStarLine,
-  RiDatabase2Line,
-  RiGlobalLine,
-  RiSecurePaymentLine,
-  RiLineChartLine,
-  RiSettings4Line,
-  RiCodeSSlashLine,
-  RiStackLine,
-  RiShieldCheckLine,
-  RiRocketLine,
-  RiArrowRightUpLine,
-  RiPulseLine,
-  RiBuildingLine,
-  RiFlowChart,
-  RiAppsLine,
-  RiLockLine,
-  RiCloudLine,
-  RiArrowDownLine,
-  RiQuoteText,
-  RiMegaphoneLine,
-} from "react-icons/ri";
-import Link from "next/link";
 
-/* ─── Utility ─────────────────────────────────────────────────────────── */
-function useIntersection(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, visible };
-}
+const features = [
+  [
+    "Customer Segmentation",
+    "Group customers by behavior, not guesswork",
+    "Segment customers by purchase history, browsing activity, or engagement level so messages are relevant instead of generic.",
+  ],
+  [
+    "Automated Customer Journeys",
+    "Build the journey once, let it run",
+    "Set up a sequence of messages that responds to what each customer does, with no manual triggering required.",
+  ],
+  [
+    "Lead Nurturing",
+    "Stay in front of leads automatically",
+    "Automatically follow up with interested leads on a schedule you define while their interest is still warm.",
+  ],
+  [
+    "Abandoned Cart Recovery",
+    "Recover carts without manual outreach",
+    "When a customer leaves items in their cart, an automated reminder sequence helps bring them back.",
+  ],
+  [
+    "Email Automation",
+    "Trigger-based email without manual sends",
+    "Run welcome, follow-up, and re-engagement email sequences tied to each customer lifecycle stage.",
+  ],
+  [
+    "WhatsApp Automation",
+    "Reach customers where they already are",
+    "Automate WhatsApp messages for order updates, reminders, promotions, and customer conversations.",
+  ],
+  [
+    "AI Voice Automation",
+    "Extend automation into voice conversations",
+    "Use automated voice communication for follow-ups, qualification, support, and order-related conversations.",
+  ],
+  [
+    "Campaign Automation",
+    "Schedule campaigns once and let them run",
+    "Deliver campaigns to the right customer segment on the right schedule without repetitive manual sends.",
+  ],
+  [
+    "Customer Re-engagement",
+    "Bring back customers who have gone quiet",
+    "Detect inactive customers and automatically move them into targeted re-engagement journeys.",
+  ],
+  [
+    "Marketing Analytics",
+    "Understand what happens across every journey",
+    "Review customer responses and journey performance so workflows can be monitored and improved.",
+  ],
+];
 
-/* ─── Animated Counter ────────────────────────────────────────────────── */
-function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
-  const [val, setVal] = useState(0);
-  const { ref, visible } = useIntersection();
-  useEffect(() => {
-    if (!visible) return;
-    let start = 0;
-    const step = Math.ceil(to / 60);
-    const t = setInterval(() => {
-      start += step;
-      if (start >= to) { setVal(to); clearInterval(t); } else setVal(start);
-    }, 20);
-    return () => clearInterval(t);
-  }, [visible, to]);
-  return <span ref={ref}>{val.toLocaleString()}{suffix}</span>;
-}
+const workflow = [
+  [
+    "Customer Action",
+    "A visitor browses, adds to cart, purchases, or goes inactive.",
+  ],
+  ["Trigger", "That action is captured the moment it happens."],
+  ["Customer Segment", "The customer is matched to a relevant segment."],
+  ["Condition", "Rules decide whether, when, and how to respond."],
+  ["Communication", "A message goes out through email, WhatsApp, or voice."],
+  [
+    "Response",
+    "The system tracks whether the customer opens, clicks, replies, or purchases.",
+  ],
+  [
+    "Next Action",
+    "A follow-up, escalation, or handoff starts based on the response.",
+  ],
+  [
+    "Conversion / Retention",
+    "The customer converts or enters a retention journey.",
+  ],
+  [
+    "Analytics",
+    "Each step is logged so performance can be reviewed and improved.",
+  ],
+];
 
-/* ─── Floating Orb Background ─────────────────────────────────────────── */
-function OrbBg() {
+const lifecycle = [
+  [
+    "Visitor",
+    "Lead capture and engagement",
+    "A visitor's activity is tracked and captured as a lead opportunity.",
+  ],
+  [
+    "Lead",
+    "Automated nurturing",
+    "Follow-up messages go out automatically while interest is still warm.",
+  ],
+  [
+    "Interested Customer",
+    "Personalized communication",
+    "Messages reflect the products and content the customer engaged with.",
+  ],
+  [
+    "Cart / Purchase Intent",
+    "Cart recovery",
+    "Abandoned cart recovery messages are sent automatically.",
+  ],
+  [
+    "Customer",
+    "Post-purchase communication",
+    "Order confirmations and follow-ups run without manual work.",
+  ],
+  [
+    "Repeat Customer",
+    "Cross-sell and upsell",
+    "Communication is shaped by purchase history.",
+  ],
+  [
+    "Loyal Customer",
+    "Retention campaigns",
+    "Long-term customers stay engaged through relevant journeys.",
+  ],
+];
+
+const useCases = [
+  [
+    "Lead nurturing",
+    "Leads go cold without consistent follow-up",
+    "Scheduled automated follow-up sequence",
+    "Leads stay engaged without manual chasing",
+  ],
+  [
+    "Abandoned cart recovery",
+    "Carts are left without any reminder",
+    "Trigger-based recovery messages",
+    "Recovers potential lost sales",
+  ],
+  [
+    "Welcome campaigns",
+    "New customers get no structured onboarding",
+    "Automated welcome sequence on signup or first purchase",
+    "Creates a stronger first impression and faster activation",
+  ],
+  [
+    "Post-purchase communication",
+    "Customers hear nothing after buying",
+    "Automated confirmation and follow-up messages",
+    "Builds trust and reduces routine support queries",
+  ],
+  [
+    "Customer re-engagement",
+    "Inactive customers are never targeted",
+    "Automated inactivity trigger",
+    "Brings dormant customers back",
+  ],
+  [
+    "Cross-selling",
+    "Relevant add-ons are never suggested",
+    "Automated recommendations after purchase",
+    "Increases order value over time",
+  ],
+  [
+    "Upselling",
+    "Upgrade opportunities are missed",
+    "Automated trigger based on usage or purchase patterns",
+    "Increases customer lifetime value",
+  ],
+  [
+    "Product promotion",
+    "Promotions rely on manual blasts",
+    "Scheduled, segmented promotional sends",
+    "Reaches the right segment at the right time",
+  ],
+  [
+    "Customer segmentation",
+    "Every customer gets the same message",
+    "Behavior and purchase-based segmentation",
+    "Creates more relevant communication",
+  ],
+  [
+    "Event-based campaigns",
+    "Time-sensitive moments are missed",
+    "Trigger tied to a specific event or date",
+    "Delivers timely communication",
+  ],
+  [
+    "Sales follow-up",
+    "Follow-ups depend on memory",
+    "Automated follow-up reminders",
+    "Fewer leads fall through the cracks",
+  ],
+  [
+    "Customer support communication",
+    "Routine updates require manual sends",
+    "Automated status and update messaging",
+    "Reduces manual support workload",
+  ],
+];
+
+const audiences = [
+  [
+    "Ecommerce businesses",
+    "Recover carts and run lifecycle messaging without a large marketing team.",
+  ],
+  [
+    "Online retailers",
+    "Manage repeat-customer communication across product catalogues.",
+  ],
+  [
+    "D2C brands",
+    "Build direct customer relationships through personalized journeys.",
+  ],
+  ["B2B businesses", "Automate lead nurturing across longer sales cycles."],
+  [
+    "Small and medium businesses",
+    "Let automation handle work that would otherwise need a larger team.",
+  ],
+  [
+    "Growing online stores",
+    "Scale customer communication without scaling repetitive work.",
+  ],
+  [
+    "Sales and marketing teams",
+    "Make follow-up consistent without manual tracking.",
+  ],
+];
+
+const benefits = [
+  "Reduce repetitive marketing work",
+  "Respond to customer actions faster",
+  "Build consistent customer journeys",
+  "Improve follow-up consistency",
+  "Recover potential lost sales",
+  "Personalize communication at scale",
+  "Coordinate multiple channels from one place",
+  "Improve visibility through analytics",
+];
+
+const comparison = [
+  [
+    "Customer segmentation",
+    "Done manually in spreadsheets or not at all",
+    "Applied automatically based on behavior",
+  ],
+  ["Follow-ups", "Depend on someone remembering", "Triggered automatically"],
+  [
+    "Campaign execution",
+    "Sent manually, one batch at a time",
+    "Scheduled and triggered automatically",
+  ],
+  ["Customer journey", "Inconsistent and ad hoc", "Consistent and rule-based"],
+  ["Cart recovery", "Rarely actioned", "Automatic recovery sequence"],
+  [
+    "Personalization",
+    "Limited by team bandwidth",
+    "Applied per segment automatically",
+  ],
+  [
+    "Multi-channel communication",
+    "Managed separately per channel",
+    "Coordinated across channels",
+  ],
+  ["Analytics", "Manually compiled and delayed", "Available as journeys run"],
+  [
+    "Scalability",
+    "Limited by team size",
+    "Scales without equivalent manual workload",
+  ],
+];
+
+const faqs = [
+  [
+    "What is marketing automation?",
+    "Marketing automation is software that sends messages to customers automatically based on their actions, rather than requiring a team to track and message each customer manually.",
+  ],
+  [
+    "How does marketing automation work?",
+    "It watches for customer actions, checks predefined conditions, and automatically sends messages through email, WhatsApp, or voice while tracking the response.",
+  ],
+  [
+    "What is marketing automation software?",
+    "Marketing automation software helps businesses create automated rules and customer journeys so follow-ups, campaigns, and customer communication can run without repetitive manual work.",
+  ],
+  [
+    "How can ecommerce businesses use marketing automation?",
+    "Ecommerce businesses can use marketing automation for abandoned cart recovery, post-purchase follow-ups, customer re-engagement, cross-selling, upselling, and personalized customer communication.",
+  ],
+  [
+    "Can marketing automation recover abandoned carts?",
+    "Yes. When a customer leaves products in their cart, automated reminders can be sent through channels such as email or WhatsApp to encourage them to complete the purchase.",
+  ],
+  [
+    "Can marketing automation automate customer follow-ups?",
+    "Yes. Businesses can automatically schedule and trigger customer follow-ups based on customer actions, helping ensure that leads and customers receive timely communication.",
+  ],
+  [
+    "Can marketing automation work with WhatsApp?",
+    "Yes. SellersLogin can automate WhatsApp communication as part of customer journeys, allowing businesses to send timely messages based on customer actions and predefined conditions.",
+  ],
+  [
+    "Can marketing automation work with AI voice agents?",
+    "Yes. SellersLogin can extend automated customer journeys to AI voice agents for follow-ups, order-related communication, customer verification, and other business communication.",
+  ],
+  [
+    "How does SellersLogin marketing automation work?",
+    "SellersLogin connects customer and storefront data with automated workflows, tracks customer actions as triggers, and sends relevant communication through email, WhatsApp, or AI voice based on predefined rules.",
+  ],
+  [
+    "What channels can SellersLogin automate?",
+    "SellersLogin can automate customer communication through email, WhatsApp, and AI voice, allowing businesses to coordinate multiple channels within a single customer journey.",
+  ],
+  [
+    "What are automated customer journeys?",
+    "An automated customer journey is a predefined sequence of messages and actions that responds to customer behavior and moves customers through different stages without requiring manual intervention.",
+  ],
+  [
+    "How does customer segmentation work?",
+    "Customer segmentation groups customers based on factors such as purchase history, browsing activity, engagement, or behavior, allowing businesses to send more relevant and personalized messages.",
+  ],
+  [
+    "What is the difference between marketing automation and email automation?",
+    "Email automation focuses specifically on email communication, while marketing automation can coordinate multiple channels such as email, WhatsApp, and AI voice within a single customer journey.",
+  ],
+  [
+    "Is marketing automation useful for small businesses?",
+    "Yes. Marketing automation can help small businesses reduce repetitive manual work by automating customer follow-ups, segmentation, campaigns, and other routine communication.",
+  ],
+  [
+    "What are the benefits of marketing automation for ecommerce businesses?",
+    "Marketing automation can help ecommerce businesses improve customer engagement, automate follow-ups, recover abandoned carts, re-engage inactive customers, and create personalized communication at scale.",
+  ],
+];
+
+function SectionHeading({
+  eyebrow,
+  title,
+  copy,
+}: {
+  eyebrow: string;
+  title: string;
+  copy?: string;
+}) {
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div
-        className="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full opacity-20"
-        style={{ background: "radial-gradient(circle, #d8b4fe 0%, transparent 70%)", animation: "orbFloat 8s ease-in-out infinite" }}
-      />
-      <div
-        className="absolute top-1/2 -right-48 w-[400px] h-[400px] rounded-full opacity-15"
-        style={{ background: "radial-gradient(circle, #e9d5ff 0%, transparent 70%)", animation: "orbFloat 11s ease-in-out infinite reverse" }}
-      />
-      <div
-        className="absolute bottom-0 left-1/3 w-[300px] h-[300px] rounded-full opacity-10"
-        style={{ background: "radial-gradient(circle, #c084fc 0%, transparent 70%)", animation: "orbFloat 9s ease-in-out infinite 2s" }}
-      />
-      <style>{`
-        @keyframes orbFloat {
-          0%, 100% { transform: translateY(0px) scale(1); }
-          50% { transform: translateY(-30px) scale(1.05); }
-        }
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(32px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        @keyframes slideRight {
-          from { opacity: 0; transform: translateX(-24px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes shimmer {
-          0% { background-position: -200% center; }
-          100% { background-position: 200% center; }
-        }
-        @keyframes pulse-ring {
-          0% { transform: scale(0.9); opacity: 0.8; }
-          100% { transform: scale(1.6); opacity: 0; }
-        }
-        @keyframes dash {
-          from { stroke-dashoffset: 300; }
-          to { stroke-dashoffset: 0; }
-        }
-        @keyframes barGrow {
-          from { transform: scaleY(0); }
-          to { transform: scaleY(1); }
-        }
-        .fade-up { animation: fadeUp 0.7s cubic-bezier(.22,1,.36,1) both; }
-        .fade-in { animation: fadeIn 0.6s ease both; }
-        .slide-right { animation: slideRight 0.6s cubic-bezier(.22,1,.36,1) both; }
-      `}</style>
-    </div>
-  );
-}
-
-/* ─── Hero ────────────────────────────────────────────────────────────── */
-function Hero() {
-  return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center bg-transparent overflow-hidden pt-24 pb-20">
-      <OrbBg />
-
-      {/* Grid overlay */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.035]"
-        style={{
-          backgroundImage: "linear-gradient(#7e22ce 1px, transparent 1px), linear-gradient(90deg, #7e22ce 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
-      />
-
-      <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-        {/* Pill badge */}
-    
-
-        <h1
-          className="font-sans text-6xl md:text-8xl font-bold leading-[1.05] text-gray-900 mb-6"
-          style={{ animation: "fadeUp 0.8s cubic-bezier(.22,1,.36,1) 0.1s both" }}
-        >
-          Commerce that{" "}
-          <span
-            style={{
-              background: "linear-gradient(90deg, #9333ea, #a855f7, #d8b4fe, #9333ea)",
-              backgroundSize: "200% auto",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              animation: "shimmer 3s linear infinite",
-            }}
-          >
-            scales
-          </span>{" "}
-          <br />Automation.
-        </h1>
-
-        <p
-          className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed"
-          style={{ animation: "fadeUp 0.8s cubic-bezier(.22,1,.36,1) 0.25s both" }}
-        >
-          Launch segmented campaigns, cart recovery, and personalized
-          customer journeys that drive repeat sales — all natively integrated
-          within your SellerLogin dashboard.
-        </p>
-
-        <div
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-          style={{ animation: "fadeUp 0.8s cubic-bezier(.22,1,.36,1) 0.4s both" }}
-        >
-         <Link href="/vendor/registration">
-          <button className="group flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 shadow-lg shadow-purple-200 hover:shadow-purple-300 hover:-translate-y-0.5">
-            Request Demo
-            <RiArrowRightLine className="transition-transform duration-200 group-hover:translate-x-1" />
-          </button></Link>
-      
-        </div>
-
-        {/* Trust row */}
-        <div
-          className="mt-16 flex flex-wrap items-center justify-center gap-8 text-sm text-gray-400"
-          style={{ animation: "fadeIn 1s ease 0.7s both" }}
-        >
-          {["SOC 2 Type II", "GDPR Ready", "99.99% Uptime", "24 / 7 Support"].map((t) => (
-            <span key={t} className="flex items-center gap-2">
-              <RiCheckLine className="text-purple-400" /> {t}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Dashboard preview card */}
-      <div
-        className="relative z-10 mt-20 max-w-5xl mx-auto px-6 w-full"
-        style={{ animation: "fadeUp 1s cubic-bezier(.22,1,.36,1) 0.5s both" }}
-      >
-        <DashboardPreview />
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-300 text-xs" style={{ animation: "fadeIn 1.2s ease 1s both" }}>
-        <span className="tracking-widest uppercase">Scroll</span>
-        <RiArrowDownLine className="text-lg animate-bounce" />
-      </div>
-    </section>
-  );
-}
-
-/* ─── Dashboard Preview Card ──────────────────────────────────────────── */
-function DashboardPreview() {
-  const bars = [65, 40, 80, 55, 90, 72, 48, 85, 60, 95, 70, 88];
-  return (
-    <div className="rounded-3xl border border-purple-100 bg-white shadow-2xl shadow-purple-100/60 overflow-hidden">
-      {/* Titlebar */}
-      <div className="flex items-center gap-2 px-5 py-3 border-b border-purple-50 bg-purple-50/40">
-        <span className="w-3 h-3 rounded-full bg-purple-200" />
-        <span className="w-3 h-3 rounded-full bg-yellow-300" />
-        <span className="w-3 h-3 rounded-full bg-green-300" />
-        <span className="ml-auto text-xs text-gray-400 font-mono">dashboard.b2bpro.io</span>
-      </div>
-
-      <div className="grid grid-cols-12 gap-0">
-        {/* Sidebar */}
-        <div className="col-span-2 border-r border-purple-50 p-4 bg-white hidden md:block">
-          <div className="space-y-1">
-            {[
-              { icon: RiBarChartBoxLine, label: "Overview", active: true },
-              { icon: RiLineChartLine, label: "Orders" },
-              { icon: RiShoppingCart2Line, label: "Buyers" },
-              { icon: RiMegaphoneLine, label: "Reports" },
-              { icon: RiSettings4Line, label: "Settings" },
-            ].map(({ icon: Icon, label, active }) => (
-              <div
-                key={label}
-                className={`flex items-center gap-2 text-xs px-3 py-2 rounded-xl cursor-pointer transition-colors ${
-                  active ? "bg-purple-50 text-purple-600 font-semibold" : "text-gray-400 hover:text-gray-600"
-                }`}
-              >
-                <Icon className="text-base flex-shrink-0" />
-                <span className="truncate">{label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Main */}
-        <div className="col-span-12 md:col-span-10 p-5 bg-gray-50/30">
-          {/* KPI row */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-            {[
-              { label: "Revenue", value: "$2.4M", delta: "+18.2%", up: true },
-              { label: "Orders", value: "8,341", delta: "+12.5%", up: true },
-              { label: "Buyers", value: "1,209", delta: "+9.1%", up: true },
-              { label: "Avg. Order", value: "$287", delta: "-2.3%", up: false },
-            ].map((k) => (
-              <div key={k.label} className="bg-white rounded-2xl p-4 border border-purple-50 shadow-sm">
-                <p className="text-xs text-gray-400 mb-1">{k.label}</p>
-                <p className="text-xl font-bold text-gray-800 font-mono">{k.value}</p>
-                <p className={`text-xs font-semibold mt-1 ${k.up ? "text-purple-600" : "text-purple-600"}`}>{k.delta}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Chart + table */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {/* Bar chart */}
-            <div className="md:col-span-2 bg-white rounded-2xl border border-purple-50 p-4 shadow-sm">
-              <p className="text-xs font-semibold text-gray-600 mb-3">Monthly Revenue</p>
-              <div className="flex items-end gap-1.5 h-24">
-                {bars.map((h, i) => (
-                  <div
-                    key={i}
-                    className="flex-1 rounded-t-md"
-                    style={{
-                      height: `${h}%`,
-                      background: i === 10 ? "#9333ea" : "#f3e8ff",
-                      transformOrigin: "bottom",
-                      animation: `barGrow 0.6s cubic-bezier(.22,1,.36,1) ${i * 0.04}s both`,
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Mini table */}
-            <div className="bg-white rounded-2xl border border-purple-50 p-4 shadow-sm">
-              <p className="text-xs font-semibold text-gray-600 mb-3">Top Buyers</p>
-              <div className="space-y-2">
-                {[
-                  { name: "Nexora Corp", val: "$124K" },
-                  { name: "BlueWave Ltd", val: "$98K" },
-                  { name: "Stratus Inc", val: "$76K" },
-                  { name: "Vantex Group", val: "$61K" },
-                ].map((b) => (
-                  <div key={b.name} className="flex items-center justify-between text-xs">
-                    <span className="text-gray-600 truncate">{b.name}</span>
-                    <span className="font-semibold text-purple-600 font-mono">{b.val}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
-
-/* ─── Section Header ──────────────────────────────────────────────────── */
-function SectionHeader({ eyebrow, title, sub }: { eyebrow: string; title: string; sub?: string }) {
-  const { ref, visible } = useIntersection();
-  return (
-    <div ref={ref} className="text-center max-w-2xl mx-auto mb-16 px-4">
-      <span
-        className={`inline-block text-xs font-semibold tracking-widest uppercase text-purple-500 mb-3 transition-all duration-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-      >
+    <div className="mx-auto mb-8 max-w-3xl text-center md:mb-10">
+      <p className="mb-3 text-sm font-bold uppercase tracking-[0.22em] text-purple-600">
         {eyebrow}
-      </span>
-      <h2
-        className={`text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-4 transition-all duration-700 delay-100 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-        
-      >
+      </p>
+      <h2 className="text-3xl font-bold tracking-tight text-gray-950 md:text-5xl">
         {title}
       </h2>
-      {sub && (
-        <p className={`text-gray-500 text-lg leading-relaxed transition-all duration-700 delay-200 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
-          {sub}
-        </p>
-      )}
+      {copy && <p className="mt-5 text-lg leading-8 text-gray-600">{copy}</p>}
     </div>
   );
 }
 
-/* ─── Features ────────────────────────────────────────────────────────── */
-const features = [
-  {
-    icon: RiBarChartBoxLine,
-    title: "Real-time Analytics",
-    desc: "Live dashboards powered by streaming data pipelines. Track GMV, conversion rates, and buyer behaviour as they happen — not hours later.",
-    color: "#9333ea",
-  },
-  {
-    icon: RiShoppingCart2Line,
-    title: "Order Management",
-    desc: "Unified order lifecycle from quote to fulfilment. Handle bulk orders, custom pricing tiers, and partial shipments with no manual overhead.",
-    color: "#a855f7",
-  },
-  {
-    icon: RiTeamLine,
-    title: "Buyer Accounts",
-    desc: "Multi-user buyer portals with granular roles, credit limits, and approval workflows — tailored to how enterprise procurement actually works.",
-    color: "#c084fc",
-  },
-  {
-    icon: RiGlobalLine,
-    title: "Multi-region Commerce",
-    desc: "Sell across geographies with localised pricing, currencies, tax rules, and regulatory compliance baked into every transaction.",
-    color: "#9333ea",
-  },
-  {
-    icon: RiSecurePaymentLine,
-    title: "Flexible Payments",
-    desc: "Net 30/60/90, PO-based invoicing, ACH, wire, and card — every  payment method supported without third-party patchwork.",
-    color: "#a855f7",
-  },
-  {
-    icon: RiDatabase2Line,
-    title: "Product Catalogue",
-    desc: "Manage millions of SKUs with variant matrices, tiered pricing, contract-specific catalogues, and ERP-synced inventory in real time.",
-    color: "#c084fc",
-  },
-];
-
-function FeaturesSection() {
+function WorkflowPreview() {
   return (
-    <section className="py-28 bg-transparent">
-      <div className="max-w-6xl mx-auto px-6">
-        <SectionHeader
-          eyebrow="Platform Features"
-          title="Everything your Dashboard needs."
-          sub="No duct tape. No workarounds. Every capability your team demands, designed to work together from day one."
-        />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((f, i) => {
-            const { ref, visible } = useIntersection();
-            return (
-              <div
-                key={f.title}
-                ref={ref}
-                className={`group relative bg-white border border-purple-50 hover:border-purple-200 rounded-3xl p-7 transition-all duration-500 hover:shadow-xl hover:shadow-purple-50 hover:-translate-y-1 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-                style={{ transitionDelay: `${i * 80}ms` }}
-              >
-                <div
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110"
-                  style={{ background: `${f.color}15` }}
-                >
-                  <f.icon style={{ color: f.color, fontSize: "1.4rem" }} />
-                </div>
-                <h3 className="font-bold text-gray-800 text-lg mb-2" >{f.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{f.desc}</p>
-
-                {/* Hover accent */}
-                <div
-                  className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{ background: `linear-gradient(90deg, transparent, ${f.color}, transparent)` }}
-                />
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── How It's Built ──────────────────────────────────────────────────── */
-const stack = [
-  { icon: RiCodeSSlashLine, layer: "Frontend", tech: "Next.js 14 + TypeScript", note: "App Router, Server Components, streaming UI" },
-  { icon: RiDatabase2Line, layer: "Data Layer", tech: "PostgreSQL + Redis", note: "OLTP + real-time caching for sub-50ms reads" },
-  { icon: RiCloudLine, layer: "Infrastructure", tech: "AWS / GCP multi-region", note: "Kubernetes, auto-scaling, 99.99% SLA" },
-  { icon: RiStackLine, layer: "APIs", tech: "GraphQL + REST", tech2: "Webhooks", note: "Federated graph for composable integrations" },
-  { icon: RiLockLine, layer: "Auth & Security", tech: "OAuth 2.0 + SSO", note: "SAML, SCIM, row-level security, audit logs" },
-  { icon: RiAppsLine, layer: "Integrations", tech: "100+ connectors", note: "ERP, CRM, WMS, shipping, payments, tax" },
-];
-
-function HowBuilt() {
-  return (
-    <section className="py-28 bg-purple-50/40 relative overflow-hidden">
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: "radial-gradient(circle, #9333ea 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-        }}
-      />
-      
-    </section>
-  );
-}
-
-/* ─── Use Cases ───────────────────────────────────────────────────────── */
-const usecases = [
-  {
-    icon: RiBuildingLine,
-    industry: "Manufacturing",
-    heading: "Streamline dealer & distributor ordering",
-    body: "Replace spreadsheet-based order collection with a self-serve portal. Distributors log in, see contract pricing, and submit orders that flow directly into your ERP.",
-    tags: ["Bulk Orders", "Contract Pricing", "ERP Sync"],
-  },
-  {
-    icon: RiFlowChart,
-    industry: "Distribution",
-    heading: "Multi-warehouse fulfillment intelligence",
-    body: "Route orders to the optimal warehouse, track inventory across locations in real time, and surface low-stock alerts before they become missed shipments.",
-    tags: ["Multi-warehouse", "Inventory", "Alerts"],
-  },
-  {
-    icon: RiGlobalLine,
-    industry: "Wholesale",
-    heading: "Global catalogue with local pricing",
-    body: "Present region-specific catalogues with localised currencies, tax-inclusive pricing, and compliance-ready invoices — all managed from one interface.",
-    tags: ["Multi-currency", "Tax Rules", "Localisation"],
-  },
-  {
-    icon: RiLineChartLine,
-    industry: "SaaS / Technology",
-    heading: "Usage-based & subscription billing",
-    body: "Track product usage across customer accounts, trigger invoices on thresholds, and give finance teams real-time ARR and churn dashboards.",
-    tags: ["Usage Billing", "ARR Tracking", "Churn Analysis"],
-  },
-];
-
-function UseCases() {
-  return (
-    <section className="py-28 bg-transparent">
-      <div className="max-w-6xl mx-auto px-6">
-        <SectionHeader
-          eyebrow="Use Cases"
-          title="One platform. Every vertical."
-          sub="Whether you sell widgets or software licences, the platform adapts to your model — not the other way around."
-        />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {usecases.map((u, i) => {
-            const { ref, visible } = useIntersection();
-            return (
-              <div
-                key={u.industry}
-                ref={ref}
-                className={`group relative overflow-hidden border border-purple-50 hover:border-purple-200 rounded-3xl p-8 transition-all duration-500 hover:shadow-xl hover:shadow-purple-50 hover:-translate-y-1 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-                style={{ transitionDelay: `${i * 100}ms`, background: i % 2 === 0 ? "white" : "#faf5ff" }}
-              >
-                {/* Background accent */}
-                <div className="absolute top-0 right-0 w-40 h-40 rounded-bl-full opacity-5 bg-purple-400 transition-all duration-500 group-hover:opacity-10 group-hover:w-52 group-hover:h-52" />
-
-                <div className="flex items-start gap-4 mb-5">
-                  <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center flex-shrink-0">
-                    <u.icon className="text-purple-500 text-xl" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-widest text-purple-400 mb-1">{u.industry}</p>
-                    <h3 className="font-bold text-gray-800 text-lg leading-snug" >{u.heading}</h3>
-                  </div>
-                </div>
-                <p className="text-gray-500 text-sm leading-relaxed mb-6">{u.body}</p>
-                <div className="flex flex-wrap gap-2">
-                  {u.tags.map((t) => (
-                    <span key={t} className="text-xs px-3 py-1 rounded-full bg-purple-50 text-purple-600 font-medium border border-purple-100">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Stats Band ──────────────────────────────────────────────────────── */
-function StatsBand() {
-  const { ref, visible } = useIntersection();
-  const stats = [
-    { value: 100, suffix: "%", label: "Full Support and help" },
-    { value: 42, suffix: "+", label: "Enterprise customers" },
-    { value: 99, suffix: ".99%", label: "Guaranteed uptime" },
-    { value: 48, suffix: "hr", label: "Average onboarding time" },
-  ];
-  return (
-    <section
-      ref={ref}
-      className="py-20 bg-gradient-to-r from-purple-600 via-purple-500 to-purple-200 text-white"
+    <div
+      className="mx-auto mt-10 max-w-5xl rounded-3xl border border-purple-200 bg-white p-6 shadow-2xl shadow-purple-100/70 md:p-10"
+      aria-label="Abandoned cart automation workflow"
     >
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 text-center">
-          {stats.map((s, i) => (
-            <div
-              key={s.label}
-              className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-              style={{ transitionDelay: `${i * 120}ms` }}
-            >
-              <p className="text-5xl font-bold font-mono mb-2">
-                {visible ? <Counter to={s.value} suffix={s.suffix} /> : `0${s.suffix}`}
-              </p>
-              <p className="text-purple-100 text-sm">{s.label}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Workflow / How It Works ─────────────────────────────────────────── */
-const steps = [
-  { num: "01", title: "Connect your data sources", desc: "Sync your ERP, CRM, and warehouse systems in hours using pre-built connectors. No custom ETL required." },
-  { num: "02", title: "Configure your storefront", desc: "Set up buyer portals, custom catalogues, pricing rules, and payment terms through a no-code visual editor." },
-  { num: "03", title: "Invite your buyers", desc: "Send branded invite links. Buyers self-register, get assigned roles, and can place orders immediately." },
-  { num: "04", title: "Go live and monitor", desc: "Launch with confidence. Real-time dashboards surface every KPI you care about from the moment orders start flowing." },
-];
-
-function HowItWorks() {
-  return (
-    <section className="py-28 bg-purple-50/30">
-      <div className="max-w-6xl mx-auto px-6">
-        <SectionHeader
-          eyebrow="Getting Started"
-          title="From zero to live in under 48 hours."
-        />
-        <div className="relative grid grid-cols-1 md:grid-cols-4 gap-6">
-          {/* Horizontal connector line (desktop) */}
-          <div className="absolute top-10 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-purple-200 via-purple-400 to-purple-200 hidden md:block" />
-
-          {steps.map((s, i) => {
-            const { ref, visible } = useIntersection();
-            return (
-              <div
-                key={s.num}
-                ref={ref}
-                className={`flex flex-col items-center text-center transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-                style={{ transitionDelay: `${i * 150}ms` }}
-              >
-                <div className="relative w-20 h-20 rounded-full bg-white border-2 border-purple-200 flex items-center justify-center mb-5 shadow-md shadow-purple-100 z-10">
-                  <span className="text-2xl font-bold text-purple-500 font-mono">{s.num}</span>
-                </div>
-                <h4 className="font-bold text-gray-800 mb-2" >{s.title}</h4>
-                <p className="text-gray-500 text-sm leading-relaxed">{s.desc}</p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Integrations Grid ───────────────────────────────────────────────── */
-const integrations = [
-  "Salesforce", "SAP", "Oracle", "NetSuite", "Shopify Plus",
-  "QuickBooks", "Stripe", "Avalara", "FedEx", "UPS",
-  "Workday", "HubSpot", "Zendesk", "Slack", "Zapier",
-];
-
-function Integrations() {
-  const { ref, visible } = useIntersection();
-  return (
-    <section className="py-28 bg-transparent">
-      <div className="max-w-5xl mx-auto px-6">
-        <SectionHeader
-          eyebrow="Integrations"
-          title="Plugs into your existing stack."
-          sub="100+ pre-built integrations across ERP, CRM, payments, shipping, and beyond. Custom webhooks for everything else."
-        />
-        <div ref={ref} className="flex flex-wrap justify-center gap-3">
-          {integrations.map((name, i) => (
-            <div
-              key={name}
-              className={`px-5 py-2.5 rounded-full border border-purple-100 bg-white text-sm font-medium text-gray-600 hover:border-purple-300 hover:text-purple-600 hover:shadow-md transition-all duration-300 cursor-default ${visible ? "opacity-100 scale-100" : "opacity-0 scale-90"}`}
-              style={{ transitionDelay: `${i * 50}ms` }}
-            >
-              {name}
-            </div>
-          ))}
-        </div>
-        <div className={`mt-10 text-center transition-all duration-700 delay-700 ${visible ? "opacity-100" : "opacity-0"}`}>
-          <a href="#" className="inline-flex items-center gap-2 text-purple-600 font-semibold text-sm hover:gap-3 transition-all duration-200">
-            View all integrations <RiArrowRightLine />
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Testimonials ────────────────────────────────────────────────────── */
-const testimonials = [
-  {
-    quote: "We replaced a patchwork of spreadsheets and three separate SaaS tools with this platform. Our order processing time dropped by 74% in the first month.",
-    name: "Meredith Cole",
-    role: "VP Operations, Nexora Manufacturing",
-  },
-  {
-    quote: "The buyer portal changed how our distributors interact with us. They self-serve everything now — POs, invoices, shipment tracking. Our CS team finally has room to breathe.",
-    name: "James Okafor",
-    role: "Head of Sales, BlueWave Distribution",
-  },
-  {
-    quote: "The analytics are genuinely best-in-class. I can drill from top-line GMV all the way down to an individual buyer's order history in two clicks. Phenomenal product.",
-    name: "Priya Shankar",
-    role: "Chief Revenue Officer, Stratus Group",
-  },
-];
-
-function Testimonials() {
-  return (
-    <section className="py-28 bg-purple-50/40 relative overflow-hidden">
-      <OrbBg />
-      <div className="max-w-6xl mx-auto px-6 relative z-10">
-        <SectionHeader
-          eyebrow="Customer Stories"
-          title="Loved by the teams that run it."
-        />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((t, i) => {
-            const { ref, visible } = useIntersection();
-            return (
-              <div
-                key={t.name}
-                ref={ref}
-                className={`bg-white rounded-3xl border border-purple-50 p-8 shadow-sm hover:shadow-lg hover:shadow-purple-50 transition-all duration-500 hover:-translate-y-1 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-                style={{ transitionDelay: `${i * 120}ms` }}
-              >
-                <RiQuoteText className="text-3xl text-purple-600 mb-4" />
-                <p className="text-gray-600 text-sm leading-relaxed mb-6 italic" >
-                  {t.quote}
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-300 to-purple-200 flex items-center justify-center text-white font-bold text-sm">
-                    {t.name[0]}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-800 text-sm">{t.name}</p>
-                    <p className="text-gray-400 text-xs">{t.role}</p>
-                  </div>
-                </div>
-                <div className="flex gap-0.5 mt-4">
-                  {Array(5).fill(0).map((_, j) => <RiStarLine key={j} className="text-purple-400 text-sm" />)}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Pricing teaser ──────────────────────────────────────────────────── */
-const plans = [
-  {
-    name: "Growth",
-    price: "$499",
-    period: "/mo",
-    note: "Up to 500 orders / month",
-    features: ["5 buyer portals", "Core analytics", "10 integrations", "Email support"],
-    cta: "Start free trial",
-    highlight: false,
-  },
-  {
-    name: "Scale",
-    price: "$1,299",
-    period: "/mo",
-    note: "Unlimited orders",
-    features: ["Unlimited buyer portals", "Advanced analytics", "50+ integrations", "Priority support", "Custom pricing rules", "SSO / SAML"],
-    cta: "Start free trial",
-    highlight: true,
-  },
-  {
-    name: "Enterprise",
-    price: "Custom",
-    period: "",
-    note: "Tailored to your volume",
-    features: ["Everything in Scale", "Dedicated CSM", "Custom SLA", "On-prem option", "Compliance packages"],
-    cta: "Talk to sales",
-    highlight: false,
-  },
-];
-
-
-
-/* ─── Security Section ────────────────────────────────────────────────── */
-function Security() {
-  const pillars = [
-    { icon: RiShieldCheckLine, label: "SOC 2 Type II certified" },
-    { icon: RiLockLine, label: "AES-256 encryption at rest" },
-    { icon: RiPulseLine, label: "Real-time threat monitoring" },
-    { icon: RiFileChartLine, label: "Full audit trails" },
-    { icon: RiGlobalLine, label: "GDPR & CCPA compliant" },
-    { icon: RiCloudLine, label: "Geo-redundant backups" },
-  ];
-  return (
-    <section className="py-24 bg-purple-50/40">
-      <div className="max-w-5xl mx-auto px-6">
-        <SectionHeader
-          eyebrow="Security"
-          title="Privacy by default."
-          sub="Fully compliant with GDPR, CCPA, and global anti-spam laws out of the box."
-        />
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {pillars.map((p, i) => {
-            const { ref, visible } = useIntersection();
-            return (
-              <div
-                key={p.label}
-                ref={ref}
-                className={`flex items-center gap-3 bg-white rounded-2xl px-5 py-4 border border-purple-50 hover:border-purple-200 hover:shadow transition-all duration-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-                style={{ transitionDelay: `${i * 80}ms` }}
-              >
-                <p.icon className="text-purple-400 text-lg flex-shrink-0" />
-                <span className="text-sm font-medium text-gray-700">{p.label}</span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── CTA ─────────────────────────────────────────────────────────────── */
-function CTA() {
-  const { ref, visible } = useIntersection();
-  return (
-    <section className="py-28 bg-transparent">
-      <div
-        ref={ref}
-        className={`max-w-4xl mx-auto px-6 text-center transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-      >
-        <div className="relative rounded-4xl overflow-hidden bg-gradient-to-br from-purple-600 via-purple-500 to-purple-400 p-16 shadow-2xl shadow-purple-200">
-          {/* Floating circles */}
-          <div className="absolute top-6 right-10 w-32 h-32 rounded-full border-2 border-white/10" />
-          <div className="absolute bottom-4 left-6 w-20 h-20 rounded-full border border-white/10" />
-          <div className="absolute top-1/2 left-8 w-3 h-3 rounded-full bg-white/20" />
-
-          <p className="text-xs font-semibold tracking-widest uppercase text-purple-100 mb-4">Ready to transform your marketing?</p>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-5 leading-tight" >
-            See the automation<br />live — in 30 minutes.
-          </h2>
-          <p className="text-purple-100 text-lg mb-10 max-w-xl mx-auto">
-            Book a personalised demo to see how we automate revenue generation.
-            No sales pitch, just a real look at your use case.
+      <div className="grid items-center gap-4 md:grid-cols-[1fr_auto_1fr_auto_1.5fr_auto_1fr]">
+        <div className="rounded-2xl bg-purple-50 p-5">
+          <p className="text-xs font-bold uppercase tracking-wider text-purple-500">
+            Trigger
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-         <Link href="/vendor/registration">
-            <button className="group flex items-center gap-2 bg-white text-purple-600 hover:bg-purple-50 font-bold px-8 py-4 rounded-full transition-all duration-200 shadow-lg hover:-translate-y-0.5">
-              Book a Demo
-              <RiArrowRightLine className="transition-transform duration-200 group-hover:translate-x-1" />
-            </button></Link>
-        
+          <p className="mt-2 font-bold text-gray-900">Cart abandoned</p>
+        </div>
+        <RiArrowRightLine className="mx-auto hidden text-2xl text-purple-400 md:block" />
+        <div className="rounded-2xl bg-amber-50 p-5">
+          <p className="text-xs font-bold uppercase tracking-wider text-amber-600">
+            Condition
+          </p>
+          <p className="mt-2 font-bold text-gray-900">
+            No purchase after 1 hour
+          </p>
+        </div>
+        <RiArrowRightLine className="mx-auto hidden text-2xl text-purple-400 md:block" />
+        <div className="grid gap-3">
+          <div className="flex items-center gap-3 rounded-2xl bg-blue-50 p-4 font-semibold text-gray-900">
+            <RiMailLine className="text-xl text-blue-600" /> Send email
+          </div>
+          <div className="flex items-center gap-3 rounded-2xl bg-green-50 p-4 font-semibold text-gray-900">
+            <RiWhatsappLine className="text-xl text-green-600" /> Send WhatsApp
           </div>
         </div>
+        <RiArrowRightLine className="mx-auto hidden text-2xl text-purple-400 md:block" />
+        <div className="rounded-2xl bg-emerald-50 p-5 text-center">
+          <RiCheckLine className="mx-auto text-3xl text-emerald-600" />
+          <p className="mt-2 font-bold text-gray-900">Cart recovered</p>
+        </div>
       </div>
-    </section>
+    </div>
   );
 }
 
-/* ─── Page Assembly ───────────────────────────────────────────────────── */
 export default function MarketingAutomationPage() {
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(([q, a]) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
+  };
   return (
     <>
       <CustomCursor />
       <GlobalBackground />
-      <ScrollRevealInit />
       <Navbar />
-      <main className="font-sans antialiased bg-transparent text-gray-900 overflow-x-hidden">
-        <Hero />
-   
-        <FeaturesSection />
-        <StatsBand />
-        <HowItWorks />
-        <UseCases />
-     
+      <main className="overflow-x-hidden bg-transparent font-sans text-gray-900">
+        <section className="relative px-6 pb-10 pt-28 text-center md:pb-12 md:pt-36">
+          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,#f3e8ff_0,transparent_55%)]" />
+          <p className="mb-5 text-sm font-bold uppercase tracking-[0.24em] text-purple-600">
+            AI-powered customer journeys
+          </p>
+          <h1 className="mx-auto max-w-5xl text-5xl font-bold leading-[1.06] tracking-tight text-gray-950 md:text-7xl">
+            Marketing Automation Software for Ecommerce Growth
+          </h1>
+          <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-gray-600 md:text-xl">
+            Turn customer actions into automatic follow-ups. SellersLogin
+            Marketing Automation lets ecommerce and B2B businesses segment
+            customers, recover abandoned carts, and run personalized email,
+            WhatsApp, and voice journeys without a marketing team manually
+            chasing every lead.
+          </p>
+          <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+            <Link
+              href="/vendor/registration"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-purple-600 px-8 py-4 font-bold text-white shadow-lg shadow-purple-200 transition hover:bg-purple-700"
+            >
+              Start Automating <RiArrowRightLine />
+            </Link>
+            <a
+              href="#how-it-works"
+              className="inline-flex items-center justify-center rounded-full border border-purple-200 bg-white px-8 py-4 font-bold text-purple-700 transition hover:bg-purple-50"
+            >
+              Explore Automation
+            </a>
+          </div>
+          <WorkflowPreview />
+        </section>
 
-     
-        <Security />
-        <CTA />
-        <FooterSection />
-        <BackToTop />
+        <section className="px-6 py-10 md:py-12">
+          <div className="mx-auto max-w-5xl rounded-3xl border border-purple-200 bg-purple-50 p-8 md:p-12">
+            <div className="mb-6 flex items-center gap-3 text-purple-700">
+              <RiMegaphoneLine className="text-3xl" />
+              <h2 className="text-2xl font-bold md:text-3xl">
+                What is marketing automation?
+              </h2>
+            </div>
+            <div className="grid gap-6 text-base leading-7 text-gray-700 md:grid-cols-2">
+              <p>
+                Marketing automation is software that automatically sends the
+                right message to the right customer based on their behavior,
+                such as browsing a product, abandoning a cart, or completing a
+                purchase, instead of a team manually tracking and messaging each
+                customer.
+              </p>
+              <p>
+                <strong className="text-gray-950">
+                  What does marketing automation software do?
+                </strong>{" "}
+                It watches for customer actions, applies rules to decide who
+                should be contacted and when, sends communication automatically
+                through email, WhatsApp, or voice, and reports on what happened
+                next.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-white/70 px-6 py-16 md:py-20">
+          <div className="mx-auto max-w-6xl">
+            <SectionHeading
+              eyebrow="Why automation matters"
+              title="Replace missed follow-ups with consistent customer journeys"
+            />
+            <div className="grid gap-6 lg:grid-cols-2">
+              <div className="rounded-3xl border border-red-100 bg-red-50 p-7">
+                <h3 className="text-xl font-bold text-red-900">
+                  Manual Marketing
+                </h3>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {[
+                    "Scattered Customer Data",
+                    "Missed Follow-ups",
+                    "Lost Leads",
+                    "Abandoned Carts",
+                    "Low Repeat Purchases",
+                  ].map((x) => (
+                    <span
+                      key={x}
+                      className="rounded-full border border-red-200 bg-white px-4 py-2 text-sm text-red-800"
+                    >
+                      {x}
+                    </span>
+                  ))}
+                </div>
+                <p className="mt-6 leading-7 text-red-900/80">
+                  When follow-ups depend on someone remembering to send them,
+                  leads go cold and valuable customer moments are missed.
+                </p>
+              </div>
+              <div className="rounded-3xl border border-emerald-100 bg-emerald-50 p-7">
+                <h3 className="text-xl font-bold text-emerald-900">
+                  Automated Marketing
+                </h3>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {[
+                    "Customer Segmentation",
+                    "Personalized Communication",
+                    "Automated Follow-ups",
+                    "Conversions",
+                    "Repeat Customers",
+                  ].map((x) => (
+                    <span
+                      key={x}
+                      className="rounded-full border border-emerald-200 bg-white px-4 py-2 text-sm text-emerald-800"
+                    >
+                      {x}
+                    </span>
+                  ))}
+                </div>
+                <p className="mt-6 leading-7 text-emerald-900/80">
+                  Automation sends the next relevant follow-up when the trigger
+                  happens, helping each journey move forward consistently.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="how-it-works" className="px-6 py-16 md:py-20">
+          <div className="mx-auto max-w-7xl">
+            <SectionHeading
+              eyebrow="How it works"
+              title="From customer action to conversion and retention"
+              copy="SellersLogin connects triggers, segments, conditions, communication, and response data in one repeatable workflow."
+            />
+            <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {workflow.map(([title, copy], i) => (
+                <li
+                  key={title}
+                  className="rounded-2xl border border-purple-100 bg-white p-6 shadow-sm"
+                >
+                  <span className="text-sm font-bold text-purple-600">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="mt-2 text-lg font-bold">{title}</h3>
+                  <p className="mt-2 leading-7 text-gray-600">{copy}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        <section className="bg-purple-50/60 px-6 py-16 md:py-20">
+          <div className="mx-auto max-w-7xl">
+            <SectionHeading
+              eyebrow="Core features"
+              title="Marketing automation tools for the complete customer lifecycle"
+            />
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {features.map(([title, value, copy]) => (
+                <article
+                  key={title}
+                  className="rounded-3xl border border-purple-100 bg-white p-7"
+                >
+                  <RiFlowChart className="text-3xl text-purple-600" />
+                  <h3 className="mt-5 text-xl font-bold">{title}</h3>
+                  <p className="mt-2 font-semibold text-purple-700">{value}</p>
+                  <p className="mt-3 leading-7 text-gray-600">{copy}</p>
+                  {title === "Email Automation" && (
+                    <Link
+                      href="/automation/email-automation"
+                      className="mt-4 inline-flex text-sm font-bold text-purple-700"
+                    >
+                      Explore email automation →
+                    </Link>
+                  )}
+                  {title === "WhatsApp Automation" && (
+                    <Link
+                      href="/automation/whatsapp-automation"
+                      className="mt-4 inline-flex text-sm font-bold text-purple-700"
+                    >
+                      Explore WhatsApp automation →
+                    </Link>
+                  )}
+                  {title === "AI Voice Automation" && (
+                    <Link
+                      href="/automation/ai-voice-automation"
+                      className="mt-4 inline-flex text-sm font-bold text-purple-700"
+                    >
+                      Explore AI voice automation →
+                    </Link>
+                  )}
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="px-6 py-16 md:py-20">
+          <div className="mx-auto max-w-5xl">
+            <SectionHeading
+              eyebrow="Customer journey automation"
+              title="Guide every stage from visitor to loyal customer"
+            />
+            <div className="relative space-y-4 before:absolute before:bottom-8 before:left-6 before:top-8 before:w-px before:bg-purple-200 md:before:left-1/2">
+              {lifecycle.map(([stage, title, copy], i) => (
+                <article
+                  key={stage}
+                  className={`relative rounded-2xl border border-purple-100 bg-white p-6 shadow-sm md:w-[46%] ${i % 2 ? "md:ml-auto" : ""}`}
+                >
+                  <span className="absolute left-4 top-6 z-10 flex h-5 w-5 items-center justify-center rounded-full bg-purple-600 text-[10px] font-bold text-white md:left-auto md:right-[-11.2%]">
+                    {i + 1}
+                  </span>
+                  <h3 className="pl-8 text-xl font-bold md:pl-0">{stage}</h3>
+                  <p className="mt-2 font-semibold text-purple-700">{title}</p>
+                  <p className="mt-2 leading-7 text-gray-600">{copy}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-white/70 px-6 py-16 md:py-20">
+          <div className="mx-auto max-w-7xl">
+            <SectionHeading
+              eyebrow="Use cases"
+              title="Turn common marketing gaps into automated actions"
+            />
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {useCases.map(([title, problem, automation, benefit]) => (
+                <article
+                  key={title}
+                  className="rounded-3xl border border-gray-200 bg-white p-6"
+                >
+                  <h3 className="text-xl font-bold">{title}</h3>
+                  <dl className="mt-5 space-y-4 text-sm leading-6">
+                    <div>
+                      <dt className="font-bold text-red-700">Problem</dt>
+                      <dd className="text-gray-600">{problem}</dd>
+                    </div>
+                    <div>
+                      <dt className="font-bold text-purple-700">Automation</dt>
+                      <dd className="text-gray-600">{automation}</dd>
+                    </div>
+                    <div>
+                      <dt className="font-bold text-emerald-700">
+                        Business benefit
+                      </dt>
+                      <dd className="text-gray-600">{benefit}</dd>
+                    </div>
+                  </dl>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="px-6 py-16 md:py-20">
+          <div className="mx-auto max-w-6xl">
+            <SectionHeading
+              eyebrow="Omnichannel automation"
+              title="One journey across email, WhatsApp, voice, and ecommerce"
+              copy="Marketing automation coordinates customer communication instead of running each channel separately. A journey can move from email to a WhatsApp reminder and then to a voice follow-up based on how the customer responds."
+            />
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+              <div className="rounded-3xl bg-purple-600 p-7 text-white">
+                <RiMegaphoneLine className="text-4xl" />
+                <h3 className="mt-4 text-xl font-bold">Marketing Automation</h3>
+                <p className="mt-3 text-purple-100">The shared journey hub</p>
+              </div>
+              {[
+                [
+                  RiMailLine,
+                  "Email Automation",
+                  "/automation/email-automation",
+                ],
+                [
+                  RiWhatsappLine,
+                  "WhatsApp Automation",
+                  "/automation/whatsapp-automation",
+                ],
+                [
+                  RiPhoneLine,
+                  "AI Voice Automation",
+                  "/automation/ai-voice-automation",
+                ],
+              ].map(([Icon, title, href]) => {
+                const I = Icon as typeof RiMailLine;
+                return (
+                  <Link
+                    key={String(title)}
+                    href={String(href)}
+                    className="rounded-3xl border border-purple-100 bg-white p-7 transition hover:-translate-y-1 hover:shadow-lg"
+                  >
+                    <I className="text-4xl text-purple-600" />
+                    <h3 className="mt-4 text-xl font-bold">{String(title)}</h3>
+                    <span className="mt-4 inline-flex font-bold text-purple-700">
+                      Explore channel →
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-purple-50/60 px-6 py-16 md:py-20">
+          <div className="mx-auto max-w-6xl">
+            <SectionHeading
+              eyebrow="Connected solutions"
+              title="Connect marketing automation to every customer touchpoint"
+            />
+            <div className="grid gap-5 md:grid-cols-2">
+              {[
+                [
+                  RiMailLine,
+                  "Email Automation",
+                  "Automate email communication based on customer actions and lifecycle stages.",
+                  "For deeper workflows, personalization, abandoned cart emails, and automated journeys, explore SellersLogin email marketing automation.",
+                  "/automation/email-automation",
+                ],
+                [
+                  RiWhatsappLine,
+                  "WhatsApp Automation",
+                  "Engage customers at important points in the buying journey.",
+                  "Extend customer journeys into WhatsApp for conversations, cart recovery, notifications, promotions, and support.",
+                  "/automation/whatsapp-automation",
+                ],
+                [
+                  RiPhoneLine,
+                  "AI Voice Automation",
+                  "Extend automated journeys to live-sounding voice conversations.",
+                  "Use voice automation for support, lead qualification, follow-ups, and order-related conversations.",
+                  "/automation/ai-voice-automation",
+                ],
+                [
+                  RiStore2Line,
+                  "Website Builder Connection",
+                  "Turn storefront activity into automation triggers.",
+                  "A website captures visits, leads, and product interactions that can start email, WhatsApp, or voice journeys.",
+                  "/features/website-builder",
+                ],
+              ].map(([Icon, title, intro, copy, href]) => {
+                const I = Icon as typeof RiMailLine;
+                return (
+                  <article
+                    key={String(title)}
+                    className="rounded-3xl border border-purple-100 bg-white p-8"
+                  >
+                    <I className="text-4xl text-purple-600" />
+                    <h3 className="mt-5 text-2xl font-bold">{String(title)}</h3>
+                    <p className="mt-3 font-semibold text-purple-800">
+                      {String(intro)}
+                    </p>
+                    <p className="mt-3 leading-7 text-gray-600">
+                      {String(copy)}
+                    </p>
+                    <Link
+                      href={String(href)}
+                      className="mt-5 inline-flex items-center gap-2 font-bold text-purple-700"
+                    >
+                      Explore solution <RiArrowRightLine />
+                    </Link>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section className="px-6 py-16 md:py-20">
+          <div className="mx-auto max-w-6xl rounded-[2.5rem] bg-gray-950 p-8 text-white md:p-14">
+            <SectionHeading
+              eyebrow="One connected platform"
+              title="Website Builder + Ecommerce + Marketing Automation + Email + WhatsApp + AI Voice + Analytics"
+              copy="These capabilities share customer and order data, so a journey that starts on your storefront can continue into email, WhatsApp, or voice without exporting data between disconnected tools."
+            />
+            <div className="flex flex-wrap justify-center gap-3">
+              {[
+                "Website Builder",
+                "Ecommerce",
+                "Marketing Automation",
+                "Email Automation",
+                "WhatsApp Automation",
+                "AI Voice Automation",
+                "Analytics",
+              ].map((x) => (
+                <span
+                  key={x}
+                  className="rounded-full border border-white/20 bg-white/10 px-5 py-3 font-semibold"
+                >
+                  {x}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-white/70 px-6 py-16 md:py-20">
+          <div className="mx-auto max-w-6xl">
+            <SectionHeading
+              eyebrow="Comparison"
+              title="Marketing automation vs. manual marketing"
+            />
+            <div className="overflow-x-auto rounded-3xl border border-gray-200 bg-white">
+              <table className="w-full min-w-[760px] border-collapse text-left">
+                <thead className="bg-purple-600 text-white">
+                  <tr>
+                    <th className="p-5">Capability</th>
+                    <th className="p-5">Manual Marketing</th>
+                    <th className="p-5">Automated Marketing</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {comparison.map(([area, manual, automated]) => (
+                    <tr key={area} className="border-t border-gray-100">
+                      <th scope="row" className="p-5 font-bold text-gray-950">
+                        {area}
+                      </th>
+                      <td className="p-5 text-gray-600">{manual}</td>
+                      <td className="p-5 text-gray-700">
+                        <span className="mr-2 text-emerald-600">✓</span>
+                        {automated}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section className="px-6 py-16 md:py-20">
+          <div className="mx-auto max-w-7xl">
+            <SectionHeading
+              eyebrow="Built for growing businesses"
+              title="Who is SellersLogin Marketing Automation for?"
+            />
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {audiences.map(([title, copy]) => (
+                <article
+                  key={title}
+                  className="rounded-2xl border border-purple-100 bg-white p-6"
+                >
+                  <RiTeamLine className="text-3xl text-purple-600" />
+                  <h3 className="mt-4 text-lg font-bold">{title}</h3>
+                  <p className="mt-2 leading-7 text-gray-600">{copy}</p>
+                </article>
+              ))}
+            </div>
+            <div className="mt-12 md:mt-16">
+              <SectionHeading
+                eyebrow="Business benefits"
+                title="Do more without adding repetitive manual work"
+              />
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                {benefits.map((x) => (
+                  <div
+                    key={x}
+                    className="flex items-center gap-3 rounded-2xl bg-emerald-50 p-5 font-semibold text-emerald-950"
+                  >
+                    <RiCheckLine className="shrink-0 text-xl text-emerald-600" />
+                    {x}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-purple-50/60 px-6 py-16 md:py-20">
+          <div className="mx-auto max-w-6xl">
+            <SectionHeading
+              eyebrow="Product workflow"
+              title="Build journeys from trigger to analytics"
+            />
+            <div className="rounded-3xl border-2 border-dashed border-purple-200 bg-white p-10 text-center">
+              <RiBarChartBoxLine className="mx-auto text-5xl text-purple-500" />
+              <h3 className="mt-4 text-2xl font-bold">
+                Automation builder preview
+              </h3>
+              <p className="mx-auto mt-3 max-w-2xl leading-7 text-gray-600">
+                Trigger → Condition → Customer Segment → Action → Email /
+                WhatsApp / Voice → Analytics
+              </p>
+              <p className="mt-4 text-sm font-semibold text-purple-700">
+                Product dashboard visual will be added after the final
+                automation-builder screenshot is approved.
+              </p>
+            </div>
+            <div className="mt-8 grid gap-5 md:grid-cols-2">
+              <article className="rounded-3xl border border-purple-100 bg-white p-7">
+                <h3 className="text-xl font-bold">Integration ecosystem</h3>
+                <p className="mt-3 leading-7 text-gray-600">
+                  Marketing automation integrations will be listed here after
+                  the product team confirms which platform integrations apply
+                  directly to automated marketing journeys.
+                </p>
+              </article>
+              <article className="rounded-3xl border border-purple-100 bg-white p-7">
+                <h3 className="text-xl font-bold">
+                  Control over customer journeys
+                </h3>
+                <p className="mt-3 leading-7 text-gray-600">
+                  Automated messages use customer permissions and data stored in
+                  the SellersLogin account. Businesses retain control over the
+                  segments, triggers, conditions, and channels used in each
+                  journey.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section className="px-6 py-16 md:py-20">
+          <div className="mx-auto max-w-4xl">
+            <SectionHeading
+              eyebrow="Frequently asked questions"
+              title="Marketing automation FAQs"
+            />
+            <div className="space-y-4">
+              {faqs.map(([q, a]) => (
+                <details
+                  key={q}
+                  className="group rounded-2xl border border-purple-100 bg-white p-6"
+                >
+                  <summary className="cursor-pointer list-none pr-6 text-lg font-bold text-gray-950">
+                    {q}
+                    <span className="float-right text-purple-600 group-open:rotate-45">
+                      +
+                    </span>
+                  </summary>
+                  <p className="mt-4 leading-7 text-gray-600">{a}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="px-6 py-16 md:py-20">
+          <div className="mx-auto max-w-5xl rounded-[2.5rem] bg-gradient-to-br from-purple-700 to-purple-500 p-10 text-center text-white shadow-2xl shadow-purple-200 md:p-16">
+            <RiUserHeartLine className="mx-auto text-5xl text-purple-100" />
+            <h2 className="mt-5 text-4xl font-bold md:text-5xl">
+              Turn customer actions into your next best follow-up
+            </h2>
+            <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-purple-100">
+              Build connected journeys across email, WhatsApp, and AI voice, and
+              keep every lead and customer moving forward.
+            </p>
+            <div className="mt-9 flex flex-col justify-center gap-4 sm:flex-row">
+              <Link
+                href="/vendor/registration"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-4 font-bold text-purple-700"
+              >
+                Start Automating <RiArrowRightLine />
+              </Link>
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center rounded-full border border-white/30 px-8 py-4 font-bold text-white"
+              >
+                Talk to our team
+              </Link>
+            </div>
+          </div>
+        </section>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c"),
+          }}
+        />
       </main>
+      <FooterSection />
+      <BackToTop />
     </>
   );
 }
