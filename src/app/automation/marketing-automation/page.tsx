@@ -55,11 +55,6 @@ const features = [
     "Use automated voice communication for follow-ups, qualification, support, and order-related conversations.",
   ],
   [
-    "Campaign Automation",
-    "Schedule campaigns once and let them run",
-    "Deliver campaigns to the right customer segment on the right schedule without repetitive manual sends.",
-  ],
-  [
     "Customer Re-engagement",
     "Bring back customers who have gone quiet",
     "Detect inactive customers and automatically move them into targeted re-engagement journeys.",
@@ -237,6 +232,10 @@ const audiences = [
     "Sales and marketing teams",
     "Make follow-up consistent without manual tracking.",
   ],
+  [
+    "Customer support teams",
+    "Automate routine updates and follow-ups so teams can focus on conversations that need a human.",
+  ],
 ];
 
 const benefits = [
@@ -369,39 +368,86 @@ function SectionHeading({
 
 function WorkflowPreview() {
   return (
-    <div
-      className="mx-auto mt-10 max-w-5xl rounded-3xl border border-purple-200 bg-white p-6 shadow-2xl shadow-purple-100/70 md:p-10"
-      aria-label="Abandoned cart automation workflow"
-    >
-      <div className="grid items-center gap-4 md:grid-cols-[1fr_auto_1fr_auto_1.5fr_auto_1fr]">
-        <div className="rounded-2xl bg-purple-50 p-5">
-          <p className="text-xs font-bold uppercase tracking-wider text-purple-500">
-            Trigger
-          </p>
-          <p className="mt-2 font-bold text-gray-900">Cart abandoned</p>
+    <div className="mx-auto mt-14 max-w-5xl" aria-label="Marketing automation overview">
+      <div className="mx-auto max-w-3xl text-center">
+        <p className="text-sm font-bold text-blue-700">Built for your business</p>
+        <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-950 md:text-4xl">
+          Automate the follow-up your team doesn&apos;t have time for
+        </h2>
+        <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-gray-600 md:text-lg">
+          Segment your customers or leads, set up the journey once, and
+          SellersLogin handles email, WhatsApp, and voice follow-up
+          automatically, with results you can track.
+        </p>
+      </div>
+
+      <div className="mt-8 rounded-3xl border border-gray-200 bg-white p-5 text-left shadow-xl shadow-gray-200/50 md:p-8">
+        <div className="flex items-center justify-between gap-4 text-sm text-gray-500">
+          <span>Example: one of many journeys you can build</span>
+          <span className="inline-flex items-center gap-2 font-medium text-gray-700">
+            <span className="h-2 w-2 rounded-full bg-emerald-500" /> Running
+          </span>
         </div>
-        <RiArrowRightLine className="mx-auto hidden text-2xl text-purple-400 md:block" />
-        <div className="rounded-2xl bg-amber-50 p-5">
-          <p className="text-xs font-bold uppercase tracking-wider text-amber-600">
-            Condition
-          </p>
-          <p className="mt-2 font-bold text-gray-900">
-            No purchase after 1 hour
-          </p>
-        </div>
-        <RiArrowRightLine className="mx-auto hidden text-2xl text-purple-400 md:block" />
-        <div className="grid gap-3">
-          <div className="flex items-center gap-3 rounded-2xl bg-blue-50 p-4 font-semibold text-gray-900">
-            <RiMailLine className="text-xl text-blue-600" /> Send email
+
+        <div className="mt-5 grid items-center gap-3 md:grid-cols-[1fr_auto_1fr_auto_1fr]">
+          <div className="rounded-2xl bg-violet-100 p-5">
+            <p className="text-xs font-semibold text-violet-700">Your customers</p>
+            <p className="mt-2 font-bold text-gray-950">Abandoned checkout</p>
           </div>
-          <div className="flex items-center gap-3 rounded-2xl bg-green-50 p-4 font-semibold text-gray-900">
-            <RiWhatsappLine className="text-xl text-green-600" /> Send WhatsApp
+          <RiArrowRightLine className="mx-auto hidden text-xl text-gray-500 md:block" />
+          <div className="rounded-2xl bg-blue-100 p-5">
+            <p className="text-xs font-semibold text-blue-700">What you send</p>
+            <p className="mt-2 font-bold text-gray-950">Recovery sequence</p>
+          </div>
+          <RiArrowRightLine className="mx-auto hidden text-xl text-gray-500 md:block" />
+          <div className="rounded-2xl bg-emerald-100 p-5">
+            <p className="text-xs font-semibold text-emerald-700">Result for you</p>
+            <p className="mt-2 font-bold text-gray-950">Sale recovered</p>
           </div>
         </div>
-        <RiArrowRightLine className="mx-auto hidden text-2xl text-purple-400 md:block" />
-        <div className="rounded-2xl bg-emerald-50 p-5 text-center">
-          <RiCheckLine className="mx-auto text-3xl text-emerald-600" />
-          <p className="mt-2 font-bold text-gray-900">Cart recovered</p>
+
+        <div className="mt-6">
+          <p className="text-sm text-gray-500">Also runs journeys for</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {["Lead nurturing", "Re-engagement", "Cross-sell", "Welcome campaigns"].map(
+              (journey) => (
+                <span
+                  key={journey}
+                  className="rounded-full bg-gray-50 px-4 py-2 text-sm text-gray-600"
+                >
+                  {journey}
+                </span>
+              )
+            )}
+          </div>
+        </div>
+
+        <div className="mt-6 border-t border-gray-200 pt-5">
+          <p className="text-sm text-gray-500">Channels you can automate</p>
+          <div className="mt-3 grid gap-3 sm:grid-cols-3">
+            <div className="rounded-xl bg-gray-50 p-4 text-center font-semibold text-gray-900">
+              <RiMailLine className="mx-auto mb-2 text-2xl text-blue-600" /> Email
+            </div>
+            <div className="rounded-xl bg-gray-50 p-4 text-center font-semibold text-gray-900">
+              <RiWhatsappLine className="mx-auto mb-2 text-2xl text-green-600" /> WhatsApp
+            </div>
+            <div className="rounded-xl bg-gray-50 p-4 text-center font-semibold text-gray-900">
+              <RiPhoneLine className="mx-auto mb-2 text-2xl text-violet-600" /> Voice
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-5 grid gap-4 border-t border-gray-200 pt-5 text-center sm:grid-cols-3">
+          {[
+            ["0", "Manual messages sent"],
+            ["7", "Stages automated"],
+            ["1", "Dashboard to track it all"],
+          ].map(([value, label]) => (
+            <div key={label}>
+              <p className="text-2xl font-bold text-gray-950">{value}</p>
+              <p className="mt-1 text-sm text-gray-600">{label}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
