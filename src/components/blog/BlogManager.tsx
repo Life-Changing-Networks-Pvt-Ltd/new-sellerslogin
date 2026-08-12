@@ -51,7 +51,7 @@ export function BlogManager() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-[#f7f4ec] px-5 pb-16 pt-28 text-slate-900">
+      <main className="min-h-screen bg-[#f7f4ec] px-5 pb-16 pt-28 text-slate-900" style={{ backgroundColor: "#e9d5ff" }}>
         <div className="mx-auto max-w-6xl">
           <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
             <div>
@@ -64,7 +64,7 @@ export function BlogManager() {
               </h1>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex gap-3" >
               {user ? (
                 <>
                   <Link
