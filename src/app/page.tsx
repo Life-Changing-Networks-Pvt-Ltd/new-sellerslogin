@@ -9,6 +9,24 @@ export const metadata: Metadata = createPageMetadata({
   path: "/",
 });
 
+const websiteSchema = {
+  "@context": "https://schema.org/",
+  "@type": "WebSite",
+  name: "SellersLogin",
+  alternateName: ["Sellers Login", "SellersLogin.com"],
+  url: "https://www.sellerslogin.com/",
+};
+
 export default function Home() {
-  return <LandingPage />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(websiteSchema).replace(/</g, "\\u003c"),
+        }}
+      />
+      <LandingPage />
+    </>
+  );
 }
