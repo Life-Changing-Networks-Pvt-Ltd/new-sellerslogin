@@ -577,20 +577,16 @@ export default function VendorRegistrationPage() {
 
     setIsSendingEmailOtp(true);
 
-    // Instant state transition and success popup
-    setEmail(normalizedEmail);
-    sessionStorage.setItem("vendor_email", normalizedEmail);
-    sessionStorage.setItem("vendor_email", normalizedEmail);
-    sessionStorage.setItem("vendor_registration_step", "email-otp");
-    sessionStorage.setItem("vendor_registration_step", "email-otp");
-    setStage("email-otp");
-    resetEmailOtpState();
-
-    Swal.fire("Success", "OTP sent to your email.", "success");
-
     try {
-      // Fire API call
       await dispatch(sendEmailOtp({ email: normalizedEmail })).unwrap();
+
+      setEmail(normalizedEmail);
+      sessionStorage.setItem("vendor_email", normalizedEmail);
+      sessionStorage.setItem("vendor_registration_step", "email-otp");
+      setStage("email-otp");
+      resetEmailOtpState();
+
+      Swal.fire("Success", "OTP sent to your email.", "success");
       return true;
     } catch (error) {
       const message =
@@ -598,6 +594,10 @@ export default function VendorRegistrationPage() {
           ? error
           : (error as { message?: string })?.message ??
             "Something went wrong while sending email OTP.";
+      // Keep the user on email entry so OTP fields are not shown after a failed send.
+      setStage("email-entry");
+      sessionStorage.setItem("vendor_registration_step", "email-entry");
+      resetEmailOtpState();
       Swal.fire("Error", message, "error");
       return false;
     } finally {
