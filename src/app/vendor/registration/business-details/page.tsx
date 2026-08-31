@@ -18,7 +18,7 @@ import {
 } from "@/lib/pricingData";
 import type { AppDispatch, RootState } from "@/store";
 import { updateVendorBusiness } from "@/store/slices/vendorSlice";
-import { uploadFileToCloudinary } from "@/lib/cloudinary-upload";
+import { uploadFileToMedia } from "@/lib/media-upload";
 import {
   NEXT_PUBLIC_ADMIN_APP_URL,
   NEXT_PUBLIC_COMPLETE_FEATURES_URL,
@@ -840,7 +840,7 @@ export default function VendorBusinessDetailsPage() {
     business_proof_document_2: "business_proof_document_2_url",
   };
 
-  const cloudinaryFolderByField: Record<string, string> = {
+  const mediaFolderByField: Record<string, string> = {
     avatar: "ophmate/vendors/avatars",
     gst_cert: "ophmate/vendors/documents",
     pan_card: "ophmate/vendors/documents",
@@ -1575,7 +1575,7 @@ export default function VendorBusinessDetailsPage() {
 
     setUploadingAssets((previous) => ({ ...previous, avatar: true }));
     try {
-      const upload = await uploadFileToCloudinary(file, cloudinaryFolderByField.avatar);
+      const upload = await uploadFileToMedia(file, mediaFolderByField.avatar);
       setForm((previous) => ({
         ...previous,
         avatar_url: upload.url,
