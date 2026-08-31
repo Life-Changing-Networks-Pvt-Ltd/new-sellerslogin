@@ -15,12 +15,6 @@ export function CtaSection() {
           <h2 className="reveal reveal-delay-1 text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 tracking-tight leading-tight">
             Start Selling Online Today
           </h2>
-          
-          <p className="reveal reveal-delay-2 text-base md:text-lg text-gray-300 max-w-2xl mx-auto mb-8 leading-relaxed">
-            Join 50,000+ businesses that trust Sellers Login to power their
-            online stores. Start free, no credit card required.
-          </p>
-          
           <div className="reveal reveal-delay-3 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/vendor/registration"
