@@ -1,21 +1,67 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 export function HeroSection() {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [loadVideo, setLoadVideo] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const start = () => {
+      if (!cancelled) setLoadVideo(true);
+    };
+
+    // Don't compete with HTML/JS for bandwidth on first paint.
+    if ("requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(start, { timeout: 2500 });
+      return () => {
+        cancelled = true;
+        window.cancelIdleCallback(id);
+      };
+    }
+
+    const timer = window.setTimeout(start, 1200);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!loadVideo) return;
+    const video = videoRef.current;
+    if (!video) return;
+    video.load();
+    void video.play().catch(() => {
+      // Autoplay can be blocked; static hero still shows.
+    });
+  }, [loadVideo]);
+
   return (
     <section
       id="hero"
-      className="relative flex min-h-[85vh] w-full items-center justify-center overflow-hidden"
+      className="relative flex min-h-[85vh] w-full items-center justify-center overflow-hidden bg-[#0b1020]"
     >
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="metadata"
-        className="absolute inset-0 z-0 h-full w-full object-cover"
-      >
-        <source src="/videos/background2.mp4" type="video/mp4" />
-      </video>
+      {loadVideo ? (
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="none"
+          className="absolute inset-0 z-0 h-full w-full object-cover"
+        >
+          <source src="/videos/background2.mp4" type="video/mp4" />
+        </video>
+      ) : (
+        <div
+          className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top,#4c1d95_0%,#0b1020_55%,#020617_100%)]"
+          aria-hidden="true"
+        />
+      )}
 
       <div className="pointer-events-none absolute inset-0 z-0 bg-black/60" />
       <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center px-4 py-20 text-center sm:px-6 md:py-28 lg:px-8">

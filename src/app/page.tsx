@@ -9,6 +9,9 @@ export const metadata: Metadata = createPageMetadata({
   path: "/",
 });
 
+// Cache the marketing homepage so Cloudflare/origin are not cold on every visit.
+export const revalidate = 300;
+
 const websiteSchema = {
   "@context": "https://schema.org/",
   "@type": "WebSite",
