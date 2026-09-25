@@ -9,23 +9,40 @@ export function HeroSection() {
 
   useEffect(() => {
     let cancelled = false;
+    let idleId: number | null = null;
+    let timerId: ReturnType<typeof setTimeout> | null = null;
+
     const start = () => {
       if (!cancelled) setLoadVideo(true);
     };
 
     // Don't compete with HTML/JS for bandwidth on first paint.
-    if ("requestIdleCallback" in window) {
-      const id = window.requestIdleCallback(start, { timeout: 2500 });
-      return () => {
-        cancelled = true;
-        window.cancelIdleCallback(id);
-      };
+    const ric = (
+      window as Window & {
+        requestIdleCallback?: (
+          callback: IdleRequestCallback,
+          options?: IdleRequestOptions,
+        ) => number;
+        cancelIdleCallback?: (handle: number) => void;
+      }
+    ).requestIdleCallback;
+
+    if (typeof ric === "function") {
+      idleId = ric(start, { timeout: 2500 });
+    } else {
+      timerId = setTimeout(start, 1200);
     }
 
-    const timer = window.setTimeout(start, 1200);
     return () => {
       cancelled = true;
-      window.clearTimeout(timer);
+      if (idleId != null) {
+        (
+          window as Window & {
+            cancelIdleCallback?: (handle: number) => void;
+          }
+        ).cancelIdleCallback?.(idleId);
+      }
+      if (timerId != null) clearTimeout(timerId);
     };
   }, []);
 
