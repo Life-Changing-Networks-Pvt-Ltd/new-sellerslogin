@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { WebsiteAnalyticsTracker } from "@/components/analytics/WebsiteAnalyticsTracker";
+import { NeedHelpButton } from "@/components/landing/NeedHelpButton";
 import "./globals.css";
 
 import { ClientProvider } from "@/components/ClientProvider";
@@ -47,6 +48,7 @@ export default function RootLayout({
             <WebsiteAnalyticsTracker />
           </Suspense>
           {children}
+          <NeedHelpButton />
         </BlogAuthProvider></ClientProvider>
       </body>
     </html>
