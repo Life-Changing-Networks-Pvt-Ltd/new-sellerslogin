@@ -31,7 +31,7 @@ export const sendVisitorWhatsappOtp = async (whatsappNumber: string) => {
     success: boolean;
     message: string;
     resendAfter: number;
-    whatsappNumber: string;
+    whatsappNumber?: string;
   };
 };
 

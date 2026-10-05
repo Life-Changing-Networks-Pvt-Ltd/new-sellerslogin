@@ -285,7 +285,7 @@ export function NeedHelpButton() {
       const response = await sendVisitorWhatsappOtp(contactForm.whatsappNumber);
       setContactForm((current) => ({
         ...current,
-        whatsappNumber: response.whatsappNumber,
+        whatsappNumber: response.whatsappNumber || current.whatsappNumber,
         otp: "",
       }));
       setOtpRequested(true);
