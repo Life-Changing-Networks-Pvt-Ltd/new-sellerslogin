@@ -405,6 +405,23 @@ export function NeedHelpButton() {
     setLiveMessageText("");
   };
 
+  const returnToMainMenu = () => {
+    window.localStorage.removeItem(LIVE_CHAT_STORAGE_KEY);
+    setLiveSession(null);
+    setLiveMessages([]);
+    setLiveMessageText("");
+    setLiveChatError("");
+    setContactReason(null);
+    setContactForm(EMPTY_CONTACT_FORM);
+    setOtpRequested(false);
+    setOtpVerified(false);
+    setVerificationToken("");
+    setResendSeconds(0);
+    setSelectedTopicId(null);
+    setMessages([]);
+    setView("main");
+  };
+
   const handleTopicSelect = (topic: HelpChatTopic) => {
     if (topic.type === "toast") {
       setToastMessage(topic.toastMessage || "This feature is Under Process");
@@ -832,6 +849,17 @@ export function NeedHelpButton() {
                               </div>
                             );
                           })}
+
+                          {liveSession.status === "closed" ? (
+                            <button
+                              type="button"
+                              onClick={returnToMainMenu}
+                              className="mx-auto flex items-center justify-center gap-2 rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-violet-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
+                            >
+                              <Home className="h-4 w-4" aria-hidden="true" />
+                              Main Menu
+                            </button>
+                          ) : null}
                         </div>
 
                         {liveChatError ? (
