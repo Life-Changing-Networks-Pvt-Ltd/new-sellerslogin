@@ -120,7 +120,7 @@ export function NeedHelpButton() {
 
   useEffect(() => {
     const restoreChat = async () => {
-      const chatToken = window.localStorage.getItem(LIVE_CHAT_STORAGE_KEY);
+      const chatToken = window.sessionStorage.getItem(LIVE_CHAT_STORAGE_KEY);
       if (!chatToken) return;
 
       try {
@@ -139,7 +139,7 @@ export function NeedHelpButton() {
         setLiveMessages(response.data.messages || []);
         setView("chat");
       } catch {
-        window.localStorage.removeItem(LIVE_CHAT_STORAGE_KEY);
+        window.sessionStorage.removeItem(LIVE_CHAT_STORAGE_KEY);
       }
     };
 
@@ -365,7 +365,7 @@ export function NeedHelpButton() {
         whatsappVerificationToken: verificationToken,
       });
       const session = response.data;
-      window.localStorage.setItem(LIVE_CHAT_STORAGE_KEY, session.chatToken);
+      window.sessionStorage.setItem(LIVE_CHAT_STORAGE_KEY, session.chatToken);
       setLiveSession(session);
 
       const restored = await getVisitorLiveChatSession(session.chatToken);
@@ -406,7 +406,7 @@ export function NeedHelpButton() {
   };
 
   const returnToMainMenu = () => {
-    window.localStorage.removeItem(LIVE_CHAT_STORAGE_KEY);
+    window.sessionStorage.removeItem(LIVE_CHAT_STORAGE_KEY);
     setLiveSession(null);
     setLiveMessages([]);
     setLiveMessageText("");

@@ -5,7 +5,7 @@ const baseURL = configuredUrl.replace(/\/blogs\/?$/, "");
 const api = axios.create({ baseURL });
 api.interceptors.request.use((config) => {
   if (typeof window !== "undefined") {
-    const token = localStorage.getItem("blog_token");
+    const token = sessionStorage.getItem("blog_token");
     if (token) config.headers.Authorization = `Bearer ${token}`;
   }
   return config;

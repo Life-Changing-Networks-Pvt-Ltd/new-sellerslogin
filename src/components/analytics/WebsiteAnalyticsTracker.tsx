@@ -16,10 +16,10 @@ const createUuid = () =>
 const getVisitorId = () => {
   if (typeof window === "undefined") return "";
   const key = `${STORAGE_PREFIX}_visitor`;
-  const existing = window.localStorage.getItem(key);
+  const existing = window.sessionStorage.getItem(key);
   if (existing) return existing;
   const value = createUuid();
-  window.localStorage.setItem(key, value);
+  window.sessionStorage.setItem(key, value);
   return value;
 };
 
