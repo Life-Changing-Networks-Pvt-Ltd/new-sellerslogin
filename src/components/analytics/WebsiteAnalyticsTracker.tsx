@@ -73,7 +73,7 @@ export function WebsiteAnalyticsTracker() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || pathname === "/payments/chinaindiasourcing") return;
 
     const page = `${pathname || "/"}${window.location.search || ""}`;
     const landingKey = `${STORAGE_PREFIX}_landing`;
